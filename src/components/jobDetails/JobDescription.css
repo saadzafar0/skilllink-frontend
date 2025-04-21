@@ -1,0 +1,17 @@
+/* Styles for the JobDescription component */
+.job-description {
+    background-color: #303030;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .job-description h3 {
+    font-size: 1.5rem;
+    color: #47f9ff;
+  }
+  
+  .job-description p {
+    font-size: 1rem;
+    color: #c1faff;
+  }

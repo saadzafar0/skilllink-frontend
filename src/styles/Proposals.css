@@ -1,0 +1,61 @@
+.proposals-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #e6ffe6;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #2e7d32;
+  }
+  
+  .no-proposals {
+    text-align: center;
+    color: #388e3c;
+    font-size: 1.2em;
+    padding: 20px;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 18px;
+    color: #2e7d32;
+  }
+  
+  .proposal-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+  
+  .proposal-card {
+    background-color: #ffffff;
+    border: 2px solid #66bb6a;
+    padding: 15px;
+    border-radius: 8px;
+    width: 300px;
+    transition: 0.3s;
+  }
+  
+  .proposal-card:hover {
+    background-color: #f0fff0;
+  }
+  
+  .proposal-card p {
+    margin: 8px 0;
+    color: #2e7d32;
+    font-size: 0.95em;
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .proposal-card {
+      width: 90%;
+    }
+  }
+  

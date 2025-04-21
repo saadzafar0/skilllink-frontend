@@ -1,0 +1,22 @@
+.job-list-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  background: #0f131a;
+  min-height: 70vh;
+  border-radius: 12px;
+  margin: 2rem 0;
+}
+
+.no-jobs {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem;
+  color: #4a5568;
+}
+
+.no-jobs h3 {
+  color: #1abc9c;
+  margin-bottom: 1rem;
+}

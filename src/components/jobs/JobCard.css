@@ -1,0 +1,75 @@
+.job-card {
+  background: #1a1f2b;
+  border-radius: 16px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #1abc9c55;
+}
+
+.job-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(26, 188, 156, 0.15);
+}
+
+.job-card h3 {
+  color: #1abc9c;
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+}
+
+.job-meta {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+}
+
+.job-level {
+  background: #1abc9c22;
+  color: #1abc9c;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.job-connects {
+  background: #1abc9c11;
+  color: #7fdbca;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.job-skills {
+  color: #a3b2c2;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  min-height: 40px;
+}
+
+.job-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #1abc9c;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.job-link:hover {
+  color: #fff;
+  gap: 12px;
+}
+
+.job-link::after {
+  content: '→';
+  transition: transform 0.3s ease;
+}
+
+.job-link:hover::after {
+  transform: translateX(3px);
+}

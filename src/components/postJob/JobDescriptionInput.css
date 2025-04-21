@@ -1,0 +1,41 @@
+.job-description-input {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    color: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .job-description-input label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #04ffcd;
+  }
+  
+  .job-description-input .required {
+    color: #e74c3c;
+    margin-left: 4px;
+  }
+  
+  .job-description-input textarea {
+    background-color: #121212;
+    color: #ffffff;
+    border: 1px solid #04ffcd;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .job-description-input textarea:focus {
+    border-color: #1abc9c;
+  }
+  
+  .job-description-input small {
+    margin-top: 0.3rem;
+    color: #888;
+    font-size: 0.85rem;
+  }
+  
