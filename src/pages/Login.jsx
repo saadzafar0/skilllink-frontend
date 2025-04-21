@@ -1,12 +1,10 @@
-// src/pages/Login.jsx
 import React, { useState } from 'react';
-import '../styles/Login.css';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // ✅ import context
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth(); // ✅ get login function from context
+  const { login } = useAuth();
   const [form, setForm] = useState({ email: '', password: '' });
 
   const handleChange = (e) => {
@@ -29,7 +27,6 @@ const Login = () => {
       if (response.ok) {
         console.log('Login successful:', data);
 
-        // ✅ Save user to context
         login({
           userID: data.userID,
           name: data.name,
@@ -49,11 +46,11 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>Welcome Back 👋</h2>
-        <p>Login to your SkillLink account</p>
-        <form onSubmit={handleSubmit}>
+    <div className="flex justify-center items-center h-[90vh] bg-[#f0f8f8]">
+      <div className="bg-white p-12 rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.1)] w-full max-w-[400px] text-center">
+        <h2 className="text-teal-700 text-2xl font-semibold mb-2">Welcome Back 👋</h2>
+        <p className="text-[#555] mb-8">Login to your SkillLink account</p>
+        <form onSubmit={handleSubmit} className="flex flex-col items-center">
           <input
             type="email"
             name="email"
@@ -61,6 +58,7 @@ const Login = () => {
             value={form.email}
             onChange={handleChange}
             required
+            className="w-[92%] p-4 mb-4 border border-gray-300 rounded-lg text-base"
           />
           <input
             type="password"
@@ -69,11 +67,20 @@ const Login = () => {
             value={form.password}
             onChange={handleChange}
             required
+            className="w-[92%] p-4 mb-4 border border-gray-300 rounded-lg text-base"
           />
-          <button type="submit">Login</button>
+          <button
+            type="submit"
+            className="w-full p-4 bg-teal-700 text-white rounded-lg text-base font-medium hover:bg-teal-800 transition-colors duration-300"
+          >
+            Login
+          </button>
         </form>
-        <p className="signup-link">
-          Don’t have an account? <a href="/register">Register here</a>
+        <p className="mt-4 text-sm text-gray-700">
+          Don’t have an account?{' '}
+          <a href="/register" className="text-teal-700 hover:underline">
+            Register here
+          </a>
         </p>
       </div>
     </div>
