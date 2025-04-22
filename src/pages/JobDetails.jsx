@@ -5,40 +5,38 @@ import ClientInfo from "../components/jobDetails/ClientInfo";
 import JobDescription from "../components/jobDetails/JobDescription";
 import JobDetailsInfo from "../components/jobDetails/JobDetailsInfo";
 import SkillsList from "../components/jobDetails/SkillsList";
+
 import SendProposal from "../components/jobDetails/SendProposals";
 import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 import "../styles/JobDetails.css";
 
 const JobDetails = () => {
-  const { user: currentUser } = useAuth();
-  const { jobId } = useParams();
+  const { user } = useAuth();
+  const { jobID } = useParams();
   const [jobDetails, setJobDetails] = useState(null);
 
   useEffect(() => {
-    console.log("Fetching job details for jobId:", jobId);
+    console.log("Fetching job details for jobId:", jobID);
     const fetchJobDetails = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:4000/api/v1/jobs/${jobId}`
-        );
-        if (!response.ok) {
-          const errText = await response.text();
-          throw new Error(`Server responded with: ${errText}`);
-        }
-        const data = await response.json();
-        setJobDetails(data);
+        const response = await axios.get(`http://localhost:4000/api/v1/jobs/${jobID}`);
+        setJobDetails(response.data);
       } catch (error) {
         console.error("Error fetching job details:", error);
       }
     };
 
-    if (jobId) fetchJobDetails();
-  }, [jobId]);
+    if (jobID) fetchJobDetails();
+  }, [jobID]);
 
   if (!jobDetails) {
     return <div>Loading...</div>;
   }
+
+  // Log the user information for debugging
+  console.log("Current user in JobDetails:", user);
 
   const handleProposalSubmit = (proposalData) => {
     console.log("Proposal submitted:", proposalData);
@@ -60,12 +58,12 @@ const JobDetails = () => {
         connectsRequired={jobDetails.connectsRequired}
         postedOn={jobDetails.postedOn}
       />
-      <SkillsList skills={jobDetails.targetSkills?.split(",")} />
+      <SkillsList skills={jobDetails.targetSkills ? jobDetails.targetSkills.split(",") : []} />
       
       <SendProposal
-        jobid={jobId}
-        freelancerID={currentUser?.id} // Pass just the ID, not the entire user object
-        onSubmit={handleProposalSubmit} // Add the missing onSubmit prop
+        jobid={jobID}
+        freelancerID={user ? user.userID : null} // Changed from user.id to user.userID
+        onSubmit={handleProposalSubmit}
       />
     </div>
   );

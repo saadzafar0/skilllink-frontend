@@ -27,7 +27,7 @@ const JobCard = ({ job, showActions, onDelete, onEdit }) => {
         <div className="job-actions">
           <button onClick={() => onEdit(job.jobID)}>Edit</button>
           <button onClick={() => onDelete(job.jobID)}>Delete</button>
-          <Link to={`/dashboard/jobs/${job.jobID}/proposals`}>
+          <Link to={`/jobProposals/${job.jobID}`}>
             Manage Proposals
           </Link>
         </div>
