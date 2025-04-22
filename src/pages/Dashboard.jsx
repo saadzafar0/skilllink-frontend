@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import "../styles/Dashboard.css";
 
 const Dashboard = () => {
   const { user: currentUser } = useAuth();
@@ -85,51 +84,46 @@ const Dashboard = () => {
   }, [currentUser]);
 
   return (
-    <div className="dashboard-container">
-      <main className="dashboard-main">
+    <div className="min-h-screen bg-[#111] py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
         {currentUser ? (
           <>
-            <section className="dashboard-header">
-              <h1>Welcome back, {currentUser.name} 👋</h1>
-              <h2 className="activity-summary">
-                Here’s a quick summary of your activity
-              </h2>
+            <section className="mb-8">
+              <h1 className="text-4xl font-bold text-[#1abc9c] mb-2">Welcome back, {currentUser.name} 👋</h1>
+              <h2 className="text-xl text-[#c1faff]">Here's a quick summary of your activity</h2>
             </section>
 
-            <section className="overview-section">
+            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {currentUser.accType === "Freelancer" && (
                 <div
-                  className="overview-card purple"
+                  className="bg-[#2c3e50] rounded-lg p-6 cursor-pointer hover:bg-[#34495e] transition-colors duration-300"
                   onClick={() => navigate("/connects")}
-                  style={{ cursor: "pointer" }}
                 >
-                  <h3>Connects</h3>
-                  <p>{connects} Available</p>
+                  <h3 className="text-lg font-semibold text-[#1abc9c] mb-2">Connects</h3>
+                  <p className="text-[#c1faff]">{connects} Available</p>
                 </div>
               )}
 
               <div
-                className="overview-card dark"
+                className="bg-[#2c3e50] rounded-lg p-6 cursor-pointer hover:bg-[#34495e] transition-colors duration-300"
                 onClick={() => navigate("/messages")}
-                style={{ cursor: "pointer" }}
               >
-                <h3>Messages</h3>
-                <p>{messagesCount} Unread</p>
+                <h3 className="text-lg font-semibold text-[#1abc9c] mb-2">Messages</h3>
+                <p className="text-[#c1faff]">{messagesCount} Unread</p>
               </div>
 
               <div
-                className="overview-card turquoise"
+                className="bg-[#2c3e50] rounded-lg p-6 cursor-pointer hover:bg-[#34495e] transition-colors duration-300"
                 onClick={() => navigate("/transactions")}
-                style={{ cursor: "pointer" }}
               >
-                <h3>
-                  {currentUser.accType === "Client" ? "Spent" : "Earnings"}{" "}
+                <h3 className="text-lg font-semibold text-[#1abc9c] mb-2">
+                  {currentUser.accType === "Client" ? "Spent" : "Earnings"}
                 </h3>
-                <p>${earnings}</p>
+                <p className="text-[#c1faff]">${earnings}</p>
               </div>
 
               <div
-                className="overview-card dark"
+                className="bg-[#2c3e50] rounded-lg p-6 cursor-pointer hover:bg-[#34495e] transition-colors duration-300"
                 onClick={() =>
                   navigate(
                     currentUser.accType === "Client"
@@ -137,202 +131,122 @@ const Dashboard = () => {
                       : "/proposals"
                   )
                 }
-                style={{ cursor: "pointer" }}
               >
-                <h3>
+                <h3 className="text-lg font-semibold text-[#1abc9c] mb-2">
                   {currentUser.accType === "Client"
                     ? "Active Jobs"
                     : "Applied Proposals"}
                 </h3>
-                <p>
+                <p className="text-[#c1faff]">
                   {jobsCount}{" "}
                   {currentUser.accType === "Client" ? "Active" : "Applied"}
                 </p>
               </div>
             </section>
 
-            <section className="recent-section">
+            <section className="space-y-6">
               {currentUser.accType === "Freelancer" && (
-                <section className="recent-section">
-                  <h2>Recent Proposals</h2>
+                <section>
+                  <h2 className="text-2xl font-bold text-[#1abc9c] mb-4">Recent Proposals</h2>
                   {proposals.length > 0 ? (
-                    proposals.slice(0, 2).map((p, i) => (
-                      <div key={i} className="recent-card recent-proposal-card">
-                        <div className="proposal-info">
-                          <h4>{p.title}</h4>
-                          <p>
-                            <strong>Status:</strong> {p.pStatus} &nbsp;|&nbsp;
-                            <strong>Bid:</strong> $
-                            {parseFloat(p.bidAmount).toFixed(2)} &nbsp;|&nbsp;
-                            <strong>Submitted:</strong>{" "}
-                            {new Date(p.submittedOn).toLocaleDateString()}
-                          </p>
+                    <div className="space-y-4">
+                      {proposals.slice(0, 2).map((p, i) => (
+                        <div key={i} className="bg-[#1a1a1a] rounded-lg p-6 border border-[#333] shadow-lg">
+                          <div className="mb-4">
+                            <h4 className="text-xl font-semibold text-[#1abc9c] mb-2">{p.title}</h4>
+                            <p className="text-[#c1faff]">
+                              <span className="font-semibold">Status:</span> {p.pStatus} &nbsp;|&nbsp;
+                              <span className="font-semibold">Bid:</span> ${parseFloat(p.bidAmount).toFixed(2)} &nbsp;|&nbsp;
+                              <span className="font-semibold">Submitted:</span> {new Date(p.submittedOn).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div className="flex gap-4">
+                            <button
+                              className="px-4 py-2 bg-[#1abc9c] text-white rounded-lg hover:bg-[#16a085] transition-colors duration-300"
+                              onClick={() => navigate(`/proposals/${p.proposalID}`)}
+                            >
+                              View
+                            </button>
+                            <button
+                              className="px-4 py-2 bg-[#3498db] text-white rounded-lg hover:bg-[#2980b9] transition-colors duration-300"
+                              onClick={() => navigate(`/messages?receiverID=${p.clientID}`)}
+                            >
+                              Message
+                            </button>
+                            <button
+                              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300"
+                              onClick={async () => {
+                                const confirmDelete = window.confirm("Delete this proposal?");
+                                if (confirmDelete) {
+                                  await fetch(
+                                    `http://localhost:4000/api/v1/proposals/${p.proposalID}`,
+                                    {
+                                      method: "DELETE",
+                                    }
+                                  );
+                                  setProposals((prev) =>
+                                    prev.filter((prop) => prop.proposalID !== p.proposalID)
+                                  );
+                                }
+                              }}
+                            >
+                              Delete
+                            </button>
+                          </div>
                         </div>
-                        <div className="proposal-actions">
-                          <button
-                            className="btn-view"
-                            onClick={() =>
-                              navigate(`/proposals/${p.proposalID}`)
-                            }
-                          >
-                            View
-                          </button>
-                          <button
-                            className="btn-message"
-                            onClick={() =>
-                              navigate(`/messages?receiverID=${p.clientID}`)
-                            }
-                          >
-                            Message
-                          </button>
-                          <button
-                            className="btn-delete"
-                            onClick={async () => {
-                              const confirmDelete = window.confirm(
-                                "Delete this proposal?"
-                              );
-                              if (confirmDelete) {
-                                await fetch(
-                                  `http://localhost:4000/api/v1/proposals/${p.proposalID}`,
-                                  {
-                                    method: "DELETE",
-                                  }
-                                );
-                                setProposals((prev) =>
-                                  prev.filter(
-                                    (prop) => prop.proposalID !== p.proposalID
-                                  )
-                                );
-                              }
-                            }}
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    ))
+                      ))}
+                    </div>
                   ) : (
-                    <p>No recent proposals found.</p>
+                    <p className="text-[#c1faff] text-center py-8">No recent proposals found.</p>
                   )}
                 </section>
               )}
 
               {currentUser.accType === "Client" && (
-                <section className="recent-section">
-                  <h2>Recent Active Jobs</h2>
+                <section>
+                  <h2 className="text-2xl font-bold text-[#1abc9c] mb-4">Recent Active Jobs</h2>
                   {activeJobs.length > 0 ? (
-                    activeJobs.slice(0, 3).map((job, i) => (
-                      <div key={i} className="recent-card recent-proposal-card">
-                        <div className="proposal-info">
-                          <h4>{job.title}</h4>
-                          <p>
-                            <strong>Posted:</strong>{" "}
-                            {new Date(job.postedOn).toLocaleDateString()}{" "}
-                            &nbsp;|&nbsp;
-                            <strong>Est. Time:</strong> {job.estTime}{" "}
-                            &nbsp;|&nbsp;
-                            <strong>Connects:</strong> {job.connectsRequired}
-                          </p>
+                    <div className="space-y-4">
+                      {activeJobs.slice(0, 3).map((job, i) => (
+                        <div key={i} className="bg-[#1a1a1a] rounded-lg p-6 border border-[#333] shadow-lg">
+                          <div className="mb-4">
+                            <h4 className="text-xl font-semibold text-[#1abc9c] mb-2">{job.title}</h4>
+                            <p className="text-[#c1faff]">
+                              <span className="font-semibold">Posted:</span> {new Date(job.postedOn).toLocaleDateString()} &nbsp;|&nbsp;
+                              <span className="font-semibold">Est. Time:</span> {job.estTime} &nbsp;|&nbsp;
+                              <span className="font-semibold">Connects:</span> {job.connectsRequired}
+                            </p>
+                          </div>
+                          <div className="flex gap-4">
+                            <button
+                              className="px-4 py-2 bg-[#1abc9c] text-white rounded-lg hover:bg-[#16a085] transition-colors duration-300"
+                              onClick={() => navigate(`/jobs/${job.jobID}`)}
+                            >
+                              View
+                            </button>
+                            <button
+                              className="px-4 py-2 bg-[#3498db] text-white rounded-lg hover:bg-[#2980b9] transition-colors duration-300"
+                              onClick={() => navigate(`/messages?receiverID=${job.cID}`)}
+                            >
+                              Message
+                            </button>
+                          </div>
                         </div>
-                        <div className="proposal-actions">
-                          <button
-                            className="btn-view"
-                            onClick={() => navigate(`/jobs/${job.jobID}`)}
-                          >
-                            View
-                          </button>
-                          <button
-                            className="btn-message"
-                            onClick={() =>
-                              navigate(`/messages?receiverID=${job.cID}`)
-                            }
-                          >
-                            Message
-                          </button>
-                          <button
-                            className="btn-delete"
-                            onClick={async () => {
-                              const confirmDelete =
-                                window.confirm("Delete this job?");
-                              if (confirmDelete) {
-                                await fetch(
-                                  `http://localhost:4000/api/v1/jobs/${job.jobID}`,
-                                  {
-                                    method: "DELETE",
-                                  }
-                                );
-                                setActiveJobs((prev) =>
-                                  prev.filter((j) => j.jobID !== job.jobID)
-                                );
-                                setJobsCount((prev) => prev - 1);
-                              }
-                            }}
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    ))
+                      ))}
+                    </div>
                   ) : (
-                    <p>No recent jobs found.</p>
+                    <p className="text-[#c1faff] text-center py-8">No active jobs found.</p>
                   )}
                 </section>
               )}
             </section>
-
-            <section className="dashboard-actions">
-              {currentUser.accType === "Client" ? (
-                <button
-                  className="primary-btn"
-                  onClick={() => navigate("/post-job")}
-                >
-                  Post a Job
-                </button>
-              ) : (
-                <button
-                  className="primary-btn"
-                  onClick={() => navigate("/jobs")}
-                >
-                  Browse Jobs
-                </button>
-              )}
-            </section>
           </>
         ) : (
-          <div className="guest-dashboard">
-            <div className="dashboard-header">
-              <h1>Welcome to SkillLink!</h1>
-              <p>
-                Connect with top professionals or find your next opportunity
-              </p>
-            </div>
-
-            <div className="guest-actions">
-              <div className="action-card">
-                <h3>For Freelancers</h3>
-                <p>Find exciting projects that match your skills</p>
-                <button
-                  onClick={() => navigate("/register?type=Freelancer")}
-                  className="action-button"
-                >
-                  Join as Freelancer
-                </button>
-              </div>
-
-              <div className="action-card">
-                <h3>For Clients</h3>
-                <p>Hire skilled professionals for your projects</p>
-                <button
-                  onClick={() => navigate("/register?type=Client")}
-                  className="action-button"
-                >
-                  Hire Talent
-                </button>
-              </div>
-            </div>
+          <div className="text-center py-8">
+            <p className="text-[#c1faff] text-xl">Please log in to view your dashboard.</p>
           </div>
         )}
-      </main>
+      </div>
     </div>
   );
 };

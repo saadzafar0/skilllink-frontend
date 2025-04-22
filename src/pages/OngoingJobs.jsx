@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../styles/OngoingJobs.css'; 
 import { useAuth } from "../context/AuthContext";
 
 const OngoingJobs = () => {
@@ -43,47 +42,64 @@ const OngoingJobs = () => {
         window.location.href = `/submissions/${jobId}`;
     };
 
-    if (loading) return <div className="loading-container">Loading...</div>;
-    if (error) return <div className="error-container">{error}</div>;
+    if (loading) return (
+        <div className="min-h-screen bg-[#111] flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1abc9c]"></div>
+        </div>
+    );
+    
+    if (error) return (
+        <div className="min-h-screen bg-[#111] flex items-center justify-center">
+            <div className="text-red-500 text-xl">{error}</div>
+        </div>
+    );
 
     return (
-        <div className="ongoing-jobs-container">
-            <h1 className="ongoing-jobs-title">Ongoing Jobs</h1>
-            {jobs.length === 0 ? (
-                <div className="no-jobs-message">No ongoing jobs found.</div>
-            ) : (
-                <ul className="ongoing-jobs-list">
-                    {jobs.map((job) => (
-                        <li key={job.jobID} className="job-card">
-                            <h3>{job.Title}</h3>
-                            <div className="job-meta">
-                                <span className="job-level">{job.level || 'Intermediate'}</span>
-                                <span className="job-connects">🔗 {job.connects || 0}</span>
-                                <span className="job-status">{job.pStatus || 'In Progress'}</span>
-                            </div>
-                            <p className="job-skills">
-                                {job.skills 
-                                    ? job.skills.split(",").join(" • ")
-                                    : "No specific skills required"}
-                            </p>
-                            <div className="job-actions">
-                                <button 
-                                    className="complete-btn"
-                                    onClick={() => handleMarkComplete(job.jobID)}
-                                >
-                                    Mark Complete
-                                </button>
-                                <button 
-                                    className="submissions-btn"
-                                    onClick={() => handleCheckSubmissions(job.jobID)}
-                                >
-                                    Check Submissions
-                                </button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            )}
+        <div className="min-h-screen bg-[#111] py-8 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+                <h1 className="text-4xl font-bold text-[#1abc9c] mb-8">Ongoing Jobs</h1>
+                {jobs.length === 0 ? (
+                    <div className="text-[#c1faff] text-center py-8">No ongoing jobs found.</div>
+                ) : (
+                    <ul className="space-y-6">
+                        {jobs.map((job) => (
+                            <li key={job.jobID} className="bg-[#1a1a1a] rounded-lg p-6 border border-[#333] shadow-lg">
+                                <h3 className="text-xl font-semibold text-[#1abc9c] mb-4">{job.Title}</h3>
+                                <div className="flex flex-wrap gap-4 mb-4">
+                                    <span className="px-3 py-1 bg-[#2c3e50] text-[#c1faff] rounded-full text-sm">
+                                        {job.level || 'Intermediate'}
+                                    </span>
+                                    <span className="px-3 py-1 bg-[#2c3e50] text-[#c1faff] rounded-full text-sm">
+                                        🔗 {job.connects || 0}
+                                    </span>
+                                    <span className="px-3 py-1 bg-[#2c3e50] text-[#c1faff] rounded-full text-sm">
+                                        {job.pStatus || 'In Progress'}
+                                    </span>
+                                </div>
+                                <p className="text-[#c1faff] mb-6">
+                                    {job.skills 
+                                        ? job.skills.split(",").join(" • ")
+                                        : "No specific skills required"}
+                                </p>
+                                <div className="flex gap-4">
+                                    <button 
+                                        className="px-4 py-2 bg-[#1abc9c] text-white rounded-lg hover:bg-[#16a085] transition-colors duration-300"
+                                        onClick={() => handleMarkComplete(job.jobID)}
+                                    >
+                                        Mark Complete
+                                    </button>
+                                    <button 
+                                        className="px-4 py-2 bg-[#3498db] text-white rounded-lg hover:bg-[#2980b9] transition-colors duration-300"
+                                        onClick={() => handleCheckSubmissions(job.jobID)}
+                                    >
+                                        Check Submissions
+                                    </button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
         </div>
     );
 };

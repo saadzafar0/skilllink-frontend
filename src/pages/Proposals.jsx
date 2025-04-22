@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "../styles/Proposals.css";
 import { useAuth } from "../context/AuthContext";
 
 const Proposals = () => {
@@ -34,7 +33,7 @@ const Proposals = () => {
               const propRes = await fetch(`http://localhost:4000/api/v1/proposals/job/${jobID}`);
               if (!propRes.ok) throw new Error(`Failed to fetch proposals for job ${jobID}`);
               const props = await propRes.json();
-              if (Array.isArray(props)) { // Ensure props is an array
+              if (Array.isArray(props)) {
                 allProposals.push(...props);
               }
             } catch (error) {
@@ -56,27 +55,50 @@ const Proposals = () => {
     }
   }, [user]);  
 
-  if (!user) return <div className="error">Please log in to view proposals.</div>;
-  if (loading) return <div className="loading">Loading proposals...</div>;
+  if (!user) return (
+    <div className="min-h-screen flex items-center justify-center bg-[#111]">
+      <div className="text-red-500 text-xl">Please log in to view proposals.</div>
+    </div>
+  );
+  
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center bg-[#111]">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1abc9c]"></div>
+    </div>
+  );
 
   return (
-    <div className="proposals-container">
-      <h2>Your Proposals</h2>
-      {proposals.length === 0 ? (
-        <p className="no-proposals">No proposals found.</p>
-      ) : (
-        <div className="proposal-list">
-          {proposals.map((p) => (
-            <div key={p.proposalID} className="proposal-card">
-              <p><strong>Job ID:</strong> {p.jobID}</p>
-              <p><strong>Bid:</strong> ${p.bidAmount}</p>
-              <p><strong>Status:</strong> {p.pStatus}</p>
-              <p><strong>Submitted:</strong> {new Date(p.submittedOn).toLocaleDateString()}</p>
-              <p><strong>Cover Letter:</strong> {p.coverLetter}</p>
-            </div>
-          ))}
-        </div>
-      )}
+    <div className="min-h-screen bg-[#111] py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-3xl font-bold text-[#1abc9c] mb-8">Your Proposals</h2>
+        {proposals.length === 0 ? (
+          <p className="text-[#c1faff] text-center py-8">No proposals found.</p>
+        ) : (
+          <div className="space-y-6">
+            {proposals.map((p) => (
+              <div key={p.proposalID} className="bg-[#1a1a1a] rounded-lg p-6 border border-[#333] shadow-lg">
+                <div className="space-y-4">
+                  <p className="text-[#1abc9c]">
+                    <span className="font-semibold">Job ID:</span> {p.jobID}
+                  </p>
+                  <p className="text-[#c1faff]">
+                    <span className="font-semibold text-[#1abc9c]">Bid Amount:</span> ${p.bidAmount}
+                  </p>
+                  <p className="text-[#c1faff]">
+                    <span className="font-semibold text-[#1abc9c]">Status:</span> {p.pStatus}
+                  </p>
+                  <p className="text-[#c1faff]">
+                    <span className="font-semibold text-[#1abc9c]">Submitted On:</span> {new Date(p.submittedOn).toLocaleDateString()}
+                  </p>
+                  <p className="text-[#c1faff]">
+                    <span className="font-semibold text-[#1abc9c]">Cover Letter:</span> {p.coverLetter}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

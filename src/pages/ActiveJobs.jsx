@@ -2,12 +2,18 @@ import React, { useState, useEffect } from "react";
 import Filters from "../components/jobs/Filters";
 import JobCard from "../components/jobs/JobCard";
 import { useAuth } from "../context/AuthContext";
-import "../styles/ActiveJobs.css";
 import { useNavigate } from "react-router-dom";
 
 const ActiveJobs = () => {
     const { user } = useAuth();
-    const [filters, setFilters] = useState({});
+    const [filters, setFilters] = useState({
+        search: "",
+        category: "",
+        minPrice: "",
+        maxPrice: "",
+        jobLevel: "",
+        sortBy: "newest"
+    });
     const [jobs, setJobs] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
@@ -76,27 +82,34 @@ const ActiveJobs = () => {
     };
 
     return (
-        <div className="active-jobs-page">
-            <h2>My Active Jobs</h2>
-            <div className="active-jobs-content">
-                <Filters onFilterChange={setFilters} />
-
-                <div className="job-list-container">
-                    {loading ? (
-                        <div className="loading">Loading jobs...</div>
-                    ) : sortedJobs.length === 0 ? (
-                        <div className="no-jobs">No active jobs found</div>
-                    ) : (
-                        sortedJobs.map((job) => (
-                            <JobCard
-                                key={job.jobID}
-                                job={job}
-                                showActions={true}
-                                onEdit={() => handleEdit(job.jobID)}
-                                onDelete={() => handleDelete(job.jobID)}
-                            />
-                        ))
-                    )}
+        <div className="min-h-screen bg-[#111] py-8 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+                <h2 className="text-4xl font-bold text-[#1abc9c] mb-8">My Active Jobs</h2>
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    <div className="lg:col-span-1">
+                        <Filters filters={filters} onFilterChange={setFilters} />
+                    </div>
+                    <div className="lg:col-span-3">
+                        {loading ? (
+                            <div className="flex items-center justify-center py-8">
+                                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1abc9c]"></div>
+                            </div>
+                        ) : sortedJobs.length === 0 ? (
+                            <div className="text-[#c1faff] text-center py-8">No active jobs found</div>
+                        ) : (
+                            <div className="space-y-6">
+                                {sortedJobs.map((job) => (
+                                    <JobCard
+                                        key={job.jobID}
+                                        job={job}
+                                        showActions={true}
+                                        onEdit={() => handleEdit(job.jobID)}
+                                        onDelete={() => handleDelete(job.jobID)}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

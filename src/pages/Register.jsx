@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "../styles/Register.css";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -113,203 +112,252 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
-      <form
-        className="register-form"
-        onSubmit={step === 1 ? handleNext : handleSubmit}
-      >
-        <h2>Register</h2>
+    <div className="min-h-screen flex items-center justify-center bg-[#111] py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-[#1a1a1a] p-8 rounded-xl shadow-2xl">
+        <div>
+          <h2 className="text-3xl font-bold text-center text-[#1abc9c]">Register</h2>
+        </div>
 
-        {step === 1 ? (
-          <>
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                name="name"
-                id="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
+        <form className="mt-8 space-y-6" onSubmit={step === 1 ? handleNext : handleSubmit}>
+          {step === 1 ? (
+            <>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-[#1abc9c]">
+                    Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="mt-1 w-full px-4 py-3 bg-[#222] border border-[#333] rounded-lg text-white placeholder-[#666] focus:outline-none focus:border-[#1abc9c] transition-colors duration-300"
+                  />
+                </div>
 
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-[#1abc9c]">
+                    Email <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="mt-1 w-full px-4 py-3 bg-[#222] border border-[#333] rounded-lg text-white placeholder-[#666] focus:outline-none focus:border-[#1abc9c] transition-colors duration-300"
+                  />
+                </div>
 
-            <div className="form-group password-group">
-              <label htmlFor="password">Password</label>
-              <div className="password-input-wrapper">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  id="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-                <span className="eye-icon" onClick={togglePasswordVisibility}>
-                  {showPassword ? "🙈" : "👁️"}
-                </span>
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-[#1abc9c]">
+                    Password <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      id="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                      className="mt-1 w-full px-4 py-3 bg-[#222] border border-[#333] rounded-lg text-white placeholder-[#666] focus:outline-none focus:border-[#1abc9c] transition-colors duration-300"
+                    />
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#666] hover:text-[#1abc9c]"
+                    >
+                      {showPassword ? "🙈" : "👁️"}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="country" className="block text-sm font-medium text-[#1abc9c]">
+                    Country <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="country"
+                    id="country"
+                    value={formData.country}
+                    onChange={handleChange}
+                    required
+                    className="mt-1 w-full px-4 py-3 bg-[#222] border border-[#333] rounded-lg text-white placeholder-[#666] focus:outline-none focus:border-[#1abc9c] transition-colors duration-300"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="accType" className="block text-sm font-medium text-[#1abc9c]">
+                    Account Type <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    name="accType"
+                    id="accType"
+                    value={formData.accType}
+                    onChange={handleChange}
+                    required
+                    className="mt-1 w-full px-4 py-3 bg-[#222] border border-[#333] rounded-lg text-white focus:outline-none focus:border-[#1abc9c] transition-colors duration-300"
+                  >
+                    <option value="freelancer">Freelancer</option>
+                    <option value="client">Client</option>
+                  </select>
+                </div>
               </div>
-            </div>
+            </>
+          ) : (
+            <>
+              {formData.accType === "freelancer" ? (
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="niche" className="block text-sm font-medium text-[#1abc9c]">
+                      Niche/Specialization <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="niche"
+                      id="niche"
+                      value={formData.niche}
+                      onChange={handleChange}
+                      required
+                      className="mt-1 w-full px-4 py-3 bg-[#222] border border-[#333] rounded-lg text-white placeholder-[#666] focus:outline-none focus:border-[#1abc9c] transition-colors duration-300"
+                    />
+                  </div>
 
-            <div className="form-group">
-              <label htmlFor="country">Country</label>
-              <input
-                type="text"
-                name="country"
-                id="country"
-                value={formData.country}
-                onChange={handleChange}
-                required
-              />
-            </div>
+                  <div>
+                    <label htmlFor="hourlyRate" className="block text-sm font-medium text-[#1abc9c]">
+                      Hourly Rate ($) <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      name="hourlyRate"
+                      id="hourlyRate"
+                      value={formData.hourlyRate}
+                      onChange={handleChange}
+                      required
+                      className="mt-1 w-full px-4 py-3 bg-[#222] border border-[#333] rounded-lg text-white placeholder-[#666] focus:outline-none focus:border-[#1abc9c] transition-colors duration-300"
+                    />
+                  </div>
 
-            <div className="form-group">
-              <label htmlFor="accType">Account Type</label>
-              <select
-                name="accType"
-                id="accType"
-                value={formData.accType}
-                onChange={handleChange}
-                required
+                  <div>
+                    <label htmlFor="qualification" className="block text-sm font-medium text-[#1abc9c]">
+                      Qualifications <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="qualification"
+                      id="qualification"
+                      value={formData.qualification}
+                      onChange={handleChange}
+                      required
+                      className="mt-1 w-full px-4 py-3 bg-[#222] border border-[#333] rounded-lg text-white placeholder-[#666] focus:outline-none focus:border-[#1abc9c] transition-colors duration-300"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="about" className="block text-sm font-medium text-[#1abc9c]">
+                      About You <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      name="about"
+                      id="about"
+                      value={formData.about}
+                      onChange={handleChange}
+                      required
+                      rows="4"
+                      className="mt-1 w-full px-4 py-3 bg-[#222] border border-[#333] rounded-lg text-white placeholder-[#666] focus:outline-none focus:border-[#1abc9c] transition-colors duration-300 resize-y"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="companyName" className="block text-sm font-medium text-[#1abc9c]">
+                      Company Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="companyName"
+                      id="companyName"
+                      value={formData.companyName}
+                      onChange={handleChange}
+                      required
+                      className="mt-1 w-full px-4 py-3 bg-[#222] border border-[#333] rounded-lg text-white placeholder-[#666] focus:outline-none focus:border-[#1abc9c] transition-colors duration-300"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="companyAddress" className="block text-sm font-medium text-[#1abc9c]">
+                      Company Address <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="companyAddress"
+                      id="companyAddress"
+                      value={formData.companyAddress}
+                      onChange={handleChange}
+                      required
+                      className="mt-1 w-full px-4 py-3 bg-[#222] border border-[#333] rounded-lg text-white placeholder-[#666] focus:outline-none focus:border-[#1abc9c] transition-colors duration-300"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="qualification" className="block text-sm font-medium text-[#1abc9c]">
+                      Qualifications <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="qualification"
+                      id="qualification"
+                      value={formData.qualification}
+                      onChange={handleChange}
+                      required
+                      className="mt-1 w-full px-4 py-3 bg-[#222] border border-[#333] rounded-lg text-white placeholder-[#666] focus:outline-none focus:border-[#1abc9c] transition-colors duration-300"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="about" className="block text-sm font-medium text-[#1abc9c]">
+                      About <span className="text-red-500">*</span>
+                    </label>
+                    <textarea
+                      name="about"
+                      id="about"
+                      value={formData.about}
+                      onChange={handleChange}
+                      required
+                      rows="4"
+                      className="mt-1 w-full px-4 py-3 bg-[#222] border border-[#333] rounded-lg text-white placeholder-[#666] focus:outline-none focus:border-[#1abc9c] transition-colors duration-300 resize-y"
+                    />
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+
+          <div className="flex justify-between">
+            {step === 2 && (
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className="px-4 py-2 text-[#1abc9c] hover:text-[#16a085] transition-colors duration-300"
               >
-                <option value="freelancer">Freelancer</option>
-                <option value="client">Client</option>
-              </select>
-            </div>
-          </>
-        ) : (
-          <>
-            {formData.accType === "freelancer" ? (
-              <>
-                <div className="form-group">
-                  <label htmlFor="niche">Niche/Specialization</label>
-                  <input
-                    type="text"
-                    name="niche"
-                    id="niche"
-                    value={formData.niche}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="hourlyRate">Hourly Rate ($)</label>
-                  <input
-                    type="number"
-                    name="hourlyRate"
-                    id="hourlyRate"
-                    value={formData.hourlyRate}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="qualification">Qualifications</label>
-                  <input
-                    type="text"
-                    name="qualification"
-                    id="qualification"
-                    value={formData.qualification}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="about">About You</label>
-                  <textarea
-                    name="about"
-                    id="about"
-                    value={formData.about}
-                    onChange={handleChange}
-                    required
-                    style={{
-                      backgroundColor: "#111",
-                      color: "#fff",
-                      width: "390px",
-                      height: "150px",
-                      border: "2px solid #1abc9c",
-                    }}
-                  />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="form-group">
-                  <label htmlFor="companyName">Company Name</label>
-                  <input
-                    type="text"
-                    name="companyName"
-                    id="companyName"
-                    value={formData.companyName}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="companyAddress">Company Address</label>
-                  <input
-                    type="text"
-                    name="companyAddress"
-                    id="companyAddress"
-                    value={formData.companyAddress}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="qualification">Your Qualification</label>
-                  <input
-                    type="text"
-                    name="qualification"
-                    id="qualification"
-                    value={formData.qualification}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="about">About Your Company</label>
-                  <textarea
-                    name="about"
-                    id="about"
-                    value={formData.about}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </>
+                Back
+              </button>
             )}
-          </>
-        )}
-
-        <button type="submit" className="submit-btn">
-          {step === 1 ? "Next" : "Register"}
-        </button>
-
-        {step === 2 && (
-          <button type="button" className="back-btn" onClick={() => setStep(1)}>
-            Back
-          </button>
-        )}
-      </form>
+            <button
+              type="submit"
+              className="w-full py-3 px-4 bg-[#1abc9c] text-white rounded-lg font-semibold hover:bg-[#16a085] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1abc9c] focus:ring-offset-2 focus:ring-offset-[#1a1a1a]"
+            >
+              {step === 1 ? "Next" : "Register"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

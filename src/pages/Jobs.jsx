@@ -1,31 +1,27 @@
-import React, { useState, useEffect } from "react";
-import Filters from "../components/jobs/Filters";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import JobList from "../components/jobs/JobList";
-import { useAuth } from "../context/AuthContext";
-import "../styles/Jobs.css";
+import Filters from "../components/jobs/Filters";
 
 const Jobs = () => {
-  const { currentUser } = useAuth();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
-    keyword: "",
-    level: "",
-    connects: null,
-    sortBy: "",
+    search: "",
+    category: "",
+    minPrice: "",
+    maxPrice: "",
+    jobLevel: "",
   });
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        setLoading(true);
-        // ✅ Fetch all available jobs for freelancers
-        const res = await fetch("http://localhost:4000/api/v1/jobs");
-        const data = await res.json();
-        setJobs(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.error("Failed to fetch jobs:", err);
-      } finally {
+        const response = await axios.get("http://localhost:4000/api/v1/jobs");
+        setJobs(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
         setLoading(false);
       }
     };
@@ -33,20 +29,40 @@ const Jobs = () => {
     fetchJobs();
   }, []);
 
-  return (
-    <div className="jobs-page">
-      <div className="jobs-sidebar">
-        <Filters onFilterChange={setFilters} />
-      </div>
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+  };
 
-      <div className="jobs-main">
-        {loading ? (
-          <div className="loading">Loading jobs...</div>
-        ) : jobs.length === 0 ? (
-          <div className="no-jobs">No jobs found</div>
-        ) : (
-          <JobList jobs={jobs} filters={filters} showActions />
-        )}
+  const filteredJobs = jobs.filter((job) => {
+    const matchesSearch = job.title.toLowerCase().includes(filters.search.toLowerCase());
+    const matchesCategory = !filters.category || job.category === filters.category;
+    const matchesMinPrice = !filters.minPrice || job.price >= parseInt(filters.minPrice);
+    const matchesMaxPrice = !filters.maxPrice || job.price <= parseInt(filters.maxPrice);
+    const matchesJobLevel = !filters.jobLevel || job.jobLevel === filters.jobLevel;
+
+    return matchesSearch && matchesCategory && matchesMinPrice && matchesMaxPrice && matchesJobLevel;
+  });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#111] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#1abc9c]"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#111] py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-[#1abc9c] mb-8">Available Jobs</h1>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-1">
+            <Filters onFilterChange={handleFilterChange} />
+          </div>
+          <div className="lg:col-span-3">
+            <JobList jobs={filteredJobs} />
+          </div>
+        </div>
       </div>
     </div>
   );

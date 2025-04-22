@@ -5,12 +5,9 @@ import ClientInfo from "../components/jobDetails/ClientInfo";
 import JobDescription from "../components/jobDetails/JobDescription";
 import JobDetailsInfo from "../components/jobDetails/JobDetailsInfo";
 import SkillsList from "../components/jobDetails/SkillsList";
-
 import SendProposal from "../components/jobDetails/SendProposals";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
-
-import "../styles/JobDetails.css";
 
 const JobDetails = () => {
   const { user } = useAuth();
@@ -32,39 +29,43 @@ const JobDetails = () => {
   }, [jobID]);
 
   if (!jobDetails) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#111]">
+        <div className="text-[#1abc9c] text-xl">Loading...</div>
+      </div>
+    );
   }
 
-  // Log the user information for debugging
   console.log("Current user in JobDetails:", user);
 
   const handleProposalSubmit = (proposalData) => {
     console.log("Proposal submitted:", proposalData);
-    // Handle any post-submission logic here
   };
 
   return (
-    <div className="job-details-container">
-      <JobTitle title={jobDetails.title} />
-      <ClientInfo
-        companyName={jobDetails.companyName}
-        rating={jobDetails.rating}
-        qualification={jobDetails.qualification}
-      />
-      <JobDescription description={jobDetails.description} />
-      <JobDetailsInfo
-        jobLevel={jobDetails.jobLevel}
-        estTime={jobDetails.estTime}
-        connectsRequired={jobDetails.connectsRequired}
-        postedOn={jobDetails.postedOn}
-      />
-      <SkillsList skills={jobDetails.targetSkills ? jobDetails.targetSkills.split(",") : []} />
-      
-      <SendProposal
-        jobid={jobID}
-        freelancerID={user ? user.userID : null} // Changed from user.id to user.userID
-        onSubmit={handleProposalSubmit}
-      />
+    <div className="min-h-screen bg-[#111] py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <JobTitle title={jobDetails.title} />
+        <ClientInfo
+          companyName={jobDetails.companyName}
+          rating={jobDetails.rating}
+          qualification={jobDetails.qualification}
+        />
+        <JobDescription description={jobDetails.description} />
+        <JobDetailsInfo
+          jobLevel={jobDetails.jobLevel}
+          estTime={jobDetails.estTime}
+          connectsRequired={jobDetails.connectsRequired}
+          postedOn={jobDetails.postedOn}
+        />
+        <SkillsList skills={jobDetails.targetSkills ? jobDetails.targetSkills.split(",") : []} />
+        
+        <SendProposal
+          jobid={jobID}
+          freelancerID={user ? user.userID : null}
+          onSubmit={handleProposalSubmit}
+        />
+      </div>
     </div>
   );
 };

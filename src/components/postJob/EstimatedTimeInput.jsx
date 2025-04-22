@@ -1,5 +1,4 @@
 import React from 'react';
-import './EstimatedTimeInput.css';
 
 const EstimatedTimeInput = ({ estTime, setEstTime }) => {
   const handleChange = (e) => {
@@ -7,13 +6,15 @@ const EstimatedTimeInput = ({ estTime, setEstTime }) => {
   };
 
   return (
-    <div className="estimated-time-input">
-      <label htmlFor="estimated-time">Estimated Time <span className="required">*</span></label>
+    <div className="mb-6 flex flex-col text-white font-['Segoe_UI']">
+      <label htmlFor="estimated-time" className="font-semibold mb-2 text-[#04ffcd]">
+        Estimated Time <span className="text-[#e74c3c] ml-1">*</span>
+      </label>
       <select
         id="estimated-time"
         value={estTime}
         onChange={handleChange}
-        className="select-input"
+        className="bg-[#121212] text-white border border-[#04ffcd] py-3 px-3 rounded-lg text-base w-full outline-none transition-colors duration-300 focus:border-[#1abc9c] [&>option]:bg-[#121212] [&>option]:text-white"
       >
         <option value="1 week">1 week</option>
         <option value="2 weeks">2 weeks</option>

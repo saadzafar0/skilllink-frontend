@@ -1,10 +1,10 @@
 // JobDescription.jsx
 import React from "react";
-import "./JobDescription.css"; 
+
 const JobDescription = ({ description }) => (
-  <div className="job-description">
-    <h3>Description</h3>
-    <p>{description}</p>
+  <div className="bg-[#303030] p-5 rounded-lg mb-5">
+    <h3 className="text-2xl text-[#47f9ff]">Description</h3>
+    <p className="text-base text-[#c1faff]">{description}</p>
   </div>
 );
 

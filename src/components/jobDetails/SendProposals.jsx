@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import './SendProposals.css';
 
 const SendProposal = ({ jobid, freelancerID, onSubmit }) => {
   const [bidAmount, setBidAmount] = useState("");
@@ -77,15 +76,15 @@ const SendProposal = ({ jobid, freelancerID, onSubmit }) => {
   };
 
   return (
-    <div className="send-proposal-container">
+    <div className="mt-5">
       {!freelancerID ? (
-        <div className="login-required-message">
-          <p>Please log in to submit a proposal for this job</p>
+        <div className="text-center p-5 border border-[#e0e0e0] rounded-lg bg-[#f9f9f9] mt-5">
+          <p className="text-[#721c24] font-medium">Please log in to submit a proposal for this job</p>
         </div>
       ) : (
-        <form className="send-proposal" onSubmit={handleSubmit}>
-          <h3>Send Proposal</h3>
-          <label>
+        <form className="flex flex-col gap-4 mt-5 border border-[#e0e0e0] rounded-lg p-5 bg-[#f9f9f9]" onSubmit={handleSubmit}>
+          <h3 className="mt-0 text-[#333]">Send Proposal</h3>
+          <label className="flex flex-col gap-1.5 font-medium">
             Bid Amount ($):
             <input
               type="number"
@@ -93,9 +92,10 @@ const SendProposal = ({ jobid, freelancerID, onSubmit }) => {
               onChange={(e) => setBidAmount(e.target.value)}
               required
               min="1"
+              className="p-2.5 border border-[#ddd] rounded font-normal text-sm"
             />
           </label>
-          <label>
+          <label className="flex flex-col gap-1.5 font-medium">
             Cover Letter:
             <textarea
               value={coverLetter}
@@ -103,13 +103,24 @@ const SendProposal = ({ jobid, freelancerID, onSubmit }) => {
               rows="4"
               required
               placeholder="Introduce yourself and explain why you're a good fit for this job..."
+              className="p-2.5 border border-[#ddd] rounded font-normal text-sm min-h-[100px] resize-y"
             />
           </label>
-          <button type="submit" disabled={loading}>
+          <button 
+            type="submit" 
+            disabled={loading}
+            className="bg-[#0070f3] text-white rounded px-4 py-2.5 text-base cursor-pointer transition-colors duration-200 self-start hover:bg-[#0051a8] disabled:bg-[#a3c0e6] disabled:cursor-not-allowed"
+          >
             {loading ? "Submitting..." : "Submit Proposal"}
           </button>
           {message && (
-            <p className={`submission-message ${messageType}`}>{message}</p>
+            <p className={`mt-2.5 p-2.5 rounded ${
+              messageType === "success" 
+                ? "bg-[#d4edda] text-[#155724] border border-[#c3e6cb]" 
+                : "bg-[#f8d7da] text-[#721c24] border border-[#f5c6cb]"
+            }`}>
+              {message}
+            </p>
           )}
         </form>
       )}

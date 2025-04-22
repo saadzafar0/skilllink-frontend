@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './Navbar.css';
 import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
 
@@ -60,63 +59,71 @@ const Navbar = () => {
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   return (
-    <nav className="navbar">
-      <div className="navbar-logo">
-        <img src="./logo.png" alt="logo" className="avatar-img" />
-        <h1>SkillLink</h1>
+    <nav className="bg-black px-6 py-3 flex justify-between items-center border-b-2 border-[#1abc9c] relative z-10">
+      <div className="flex items-center gap-2.5">
+        <img src="./logo.png" alt="logo" className="w-10 h-10 rounded-full" />
+        <h1 className="text-[#1abc9c] text-2xl font-bold m-0">SkillLink</h1>
       </div>
 
-      <ul className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
-        <li><Link to="/" className="nav-link">Home</Link></li>
-        <li><Link to="/dashboard" className="nav-link">Dashboard</Link></li>
+      <ul className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex md:items-center gap-5 m-0 p-0 list-none absolute md:relative top-16 md:top-0 right-0 bg-[#111] md:bg-transparent flex-col md:flex-row w-48 md:w-auto p-5 md:p-0 rounded-lg md:rounded-none`}>
+        <li><Link to="/" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Home</Link></li>
+        <li><Link to="/dashboard" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Dashboard</Link></li>
         {user && user.accType && user.accType.toLowerCase() === 'client' && (
-          <li className="nav-link-item client-balance">
+          <li className="flex flex-col md:flex-row gap-4 md:gap-6 items-center p-2 md:p-4 bg-[#1a1f2b] rounded-lg border border-[#1abc9c55]">
             {clientDetails ? (
               <>
-                <span className="balance">Balance: ${clientDetails.amount || 0}</span>
-                <span className="spent">Spent: ${clientDetails.spent || 0}</span>
+                <span className="flex items-center gap-2 text-[#1abc9c] text-sm font-semibold">
+                  <span className="before:content-['💰']">Balance: ${clientDetails.amount || 0}</span>
+                </span>
+                <span className="flex items-center gap-2 text-[#1abc9c] text-sm font-semibold">
+                  <span className="before:content-['💸']">Spent: ${clientDetails.spent || 0}</span>
+                </span>
               </>
             ) : (
-              <span className="loading">Loading client details...</span>
+              <span className="text-[#f1c40f] text-sm italic">Loading client details...</span>
             )}
-            {error && <span className="error">Error: {error}</span>}
+            {error && <span className="text-[#e74c3c] text-sm font-semibold">Error: {error}</span>}
           </li>
         )}
         {user && user.accType && user.accType.toLowerCase() === 'freelancer' && (
-          <li className="nav-link-item freelancer-balance">
+          <li className="flex flex-col md:flex-row gap-4 md:gap-6 items-center p-2 md:p-4 bg-[#1a1f2b] rounded-lg border border-[#1abc9c55]">
             {freelancerDetails ? (
               <>
-                <span className="balance">Balance: ${freelancerDetails.amount || 0}</span>
-                <span className="earned">Earned: ${freelancerDetails.earned || 0}</span>
+                <span className="flex items-center gap-2 text-[#1abc9c] text-sm font-semibold">
+                  <span className="before:content-['💰']">Balance: ${freelancerDetails.amount || 0}</span>
+                </span>
+                <span className="flex items-center gap-2 text-[#1abc9c] text-sm font-semibold">
+                  <span className="before:content-['💵']">Earned: ${freelancerDetails.earned || 0}</span>
+                </span>
               </>
             ) : (
-              <span className="loading">Loading freelancer details...</span>
+              <span className="text-[#f1c40f] text-sm italic">Loading freelancer details...</span>
             )}
-            {error && <span className="error">Error: {error}</span>}
+            {error && <span className="text-[#e74c3c] text-sm font-semibold">Error: {error}</span>}
           </li>
         )}
         {user ? (
-          <li className="nav-link-item dropdown">
-            <button onClick={toggleDropdown} className="nav-link profile-btn">
+          <li className="relative">
+            <button onClick={toggleDropdown} className="bg-[#1abc9c] text-black px-3.5 py-2 rounded-lg font-medium hover:bg-[#16a085] transition-colors duration-300">
               Profile ▾
             </button>
             {isDropdownOpen && (
-              <div className="dropdown-content">
-                <span className="dropdown-name">{user.name}</span>
-                <span className="dropdown-type">{user.accType}</span>
-                <button className="logout-btn" onClick={logout}>Logout</button>
+              <div className="absolute top-16 right-0 bg-[#222] p-3 rounded-xl shadow-lg flex flex-col min-w-[160px]">
+                <span className="text-[#eee] text-sm mb-2">{user.name}</span>
+                <span className="text-[#eee] text-sm mb-2">{user.accType}</span>
+                <button className="px-2.5 py-1.5 bg-[#1abc9c] text-black font-semibold rounded-lg hover:bg-[#16a085] transition-colors duration-300" onClick={logout}>Logout</button>
               </div>
             )}
           </li>
         ) : (
           <>
-            <li><Link to="/login" className="nav-link">Login</Link></li>
-            <li><Link to="/register" className="nav-link">Register</Link></li>
+            <li><Link to="/login" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Login</Link></li>
+            <li><Link to="/register" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Register</Link></li>
           </>
         )}
       </ul>
 
-      <div onClick={toggleMenu} className="hamburger-menu">
+      <div onClick={toggleMenu} className="block md:hidden text-3xl text-[#1abc9c] cursor-pointer">
         ☰
       </div>
     </nav>

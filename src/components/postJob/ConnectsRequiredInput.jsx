@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './ConnectsRequiredInput.css';
 
 const ConnectsRequiredInput = ({ connectsRequired, setConnectsRequired }) => {
   const [inputValue, setInputValue] = useState(connectsRequired);
@@ -20,16 +19,19 @@ const ConnectsRequiredInput = ({ connectsRequired, setConnectsRequired }) => {
   };
 
   return (
-    <div className="connects-required-input">
-      <label htmlFor="connects">Connects Required <span className="required">*</span></label>
-      <div className="input-container">
+    <div className="mb-6 flex flex-col text-white font-['Segoe_UI']">
+      <label htmlFor="connects" className="font-semibold mb-2 text-[#04ffcd]">
+        Connects Required <span className="text-[#e74c3c] ml-1">*</span>
+      </label>
+      <div className="flex gap-2 items-center">
         <input
           id="connects"
           type="text"
           value={inputValue}
           onChange={handleInputChange}
-          onBlur={handleSubmit} // Submit on blur
+          onBlur={handleSubmit}
           placeholder="Enter number of connects (1-100)"
+          className="bg-[#121212] text-white border border-[#04ffcd] py-3 px-3 rounded-lg text-base w-full outline-none transition-colors duration-300 focus:border-[#1abc9c] placeholder:text-[#7f8c8d]"
         />
       </div>
     </div>

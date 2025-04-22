@@ -1,97 +1,85 @@
-import React, { useState, useEffect } from "react";
-import "./Filters.css";
+import React from "react";
 
-const Filters = ({ onFilterChange }) => {
-  const [filters, setFilters] = useState({
-    keyword: "",
-    level: "",
-    connects: null,
-    sortBy: "",
-  });
-
-  useEffect(() => {
-    onFilterChange(filters);
-  }, []);
-
+const Filters = ({ filters, onFilterChange }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFilters((prev) => {
-      const newValue =
-        name === "connects" ? (value ? Number(value) : null) : value;
-      const newFilters = { ...prev, [name]: newValue };
-      onFilterChange(newFilters);
-      return newFilters;
-    });
+    onFilterChange({ ...filters, [name]: value });
   };
 
   return (
-    <div className="filters-container">
-      <h3>Filter Jobs</h3>
-
-      {/*  Keyword Filter (fixed to use text input) */}
-      <div className="filter-group">
-        <label htmlFor="keyword">Keyword</label>
+    <div className="bg-[#303030] rounded-lg p-6 space-y-4">
+      <h2 className="text-xl font-semibold text-[#1abc9c] mb-4">Filters</h2>
+      
+      <div className="space-y-2">
+        <label htmlFor="search" className="block text-[#c1faff]">Search</label>
         <input
           type="text"
-          id="keyword"
-          name="keyword"
-          value={filters.keyword}
+          id="search"
+          name="search"
+          value={filters.search}
           onChange={handleChange}
-          placeholder="e.g. React, design..."
+          placeholder="Search jobs..."
+          className="w-full px-4 py-2 bg-[#404040] text-[#c1faff] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1abc9c]"
         />
       </div>
 
-      {/* Job Level Filter */}
-      <div className="filter-group">
-        <label htmlFor="level">Job Level</label>
+      <div className="space-y-2">
+        <label htmlFor="category" className="block text-[#c1faff]">Category</label>
         <select
-          id="level"
-          name="level"
-          value={filters.level}
+          id="category"
+          name="category"
+          value={filters.category}
           onChange={handleChange}
+          className="w-full px-4 py-2 bg-[#404040] text-[#c1faff] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1abc9c]"
         >
-          <option value="">Any</option>
-          <option value="Beginner">Beginner</option>
-          <option value="Intermediate">Intermediate</option>
-          <option value="Advanced">Advanced</option>
-          <option value="Expert">Expert</option>
+          <option value="">All Categories</option>
+          <option value="web">Web Development</option>
+          <option value="mobile">Mobile Development</option>
+          <option value="design">Design</option>
+          <option value="writing">Writing</option>
+          <option value="marketing">Marketing</option>
         </select>
       </div>
 
-      {/* Connects Range Filter */}
-      <div className="filter-group">
-        <label htmlFor="connects">
-          Max Connects Required: <span>{filters.connects}</span>
-        </label>
+      <div className="space-y-2">
+        <label htmlFor="minPrice" className="block text-[#c1faff]">Minimum Price ($)</label>
         <input
-          type="range"
-          id="connects"
-          name="connects"
-          min="1"
-          max="100"
-          value={filters.connects || 100}
+          type="number"
+          id="minPrice"
+          name="minPrice"
+          value={filters.minPrice}
           onChange={handleChange}
+          min="0"
+          className="w-full px-4 py-2 bg-[#404040] text-[#c1faff] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1abc9c]"
         />
-        <div className="range-labels">
-          <span>1</span>
-          <span>100</span>
-        </div>
       </div>
 
-      {/* Sort By Filter */}
-      <div className="filter-group">
-        <label htmlFor="sortBy">Sort By</label>
-        <select
-          id="sortBy"
-          name="sortBy"
-          value={filters.sortBy}
+      <div className="space-y-2">
+        <label htmlFor="maxPrice" className="block text-[#c1faff]">Maximum Price ($)</label>
+        <input
+          type="number"
+          id="maxPrice"
+          name="maxPrice"
+          value={filters.maxPrice}
           onChange={handleChange}
+          min="0"
+          className="w-full px-4 py-2 bg-[#404040] text-[#c1faff] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1abc9c]"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label htmlFor="jobLevel" className="block text-[#c1faff]">Job Level</label>
+        <select
+          id="jobLevel"
+          name="jobLevel"
+          value={filters.jobLevel}
+          onChange={handleChange}
+          className="w-full px-4 py-2 bg-[#404040] text-[#c1faff] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1abc9c]"
         >
-          <option value="">Default</option>
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="connectsLow">Fewest Connects</option>
-          <option value="connectsHigh">Most Connects</option>
+          <option value="">All Levels</option>
+          <option value="entry">Entry Level</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="expert">Expert</option>
         </select>
       </div>
     </div>
