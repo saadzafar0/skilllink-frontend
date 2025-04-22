@@ -19,9 +19,8 @@ const Jobs = () => {
     const fetchJobs = async () => {
       try {
         setLoading(true);
-        const res = await fetch(
-          `http://localhost:4000/api/v1/jobs/freelancer/${currentUser.userID}`
-        );
+        // ✅ Fetch all available jobs for freelancers
+        const res = await fetch("http://localhost:4000/api/v1/jobs");
         const data = await res.json();
         setJobs(Array.isArray(data) ? data : []);
       } catch (err) {
@@ -32,7 +31,7 @@ const Jobs = () => {
     };
 
     fetchJobs();
-  }, [currentUser]);
+  }, []);
 
   return (
     <div className="jobs-page">
