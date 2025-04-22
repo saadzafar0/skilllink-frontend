@@ -12,6 +12,7 @@ import PostJob from "./pages/PostJob";
 import Proposals from "./pages/Proposals";
 import ActiveJobs from "./pages/ActiveJobs";
 import JobProposals from "./pages/JobProposals";
+import OngoingJobs from "./pages/OngoingJobs";
 // import NotFound from "./pages/NotFound";
 import './App.css';
 
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/proposals" element={<Proposals />} />
           <Route path="/active-jobs" element={<ActiveJobs />} />
           <Route path="/jobProposals/:jobId" element={<JobProposals />} />
+          <Route path="/ongoingJobs" element={<OngoingJobs />} />
 
 
         </Routes>

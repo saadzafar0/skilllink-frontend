@@ -102,6 +102,58 @@
   cursor: pointer;
 }
 
+.client-balance, .freelancer-balance {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: #1a1f2b;
+    border-radius: 8px;
+    border: 1px solid #1abc9c55;
+}
+
+.client-balance .balance,
+.client-balance .spent,
+.freelancer-balance .balance,
+.freelancer-balance .earned {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #1abc9c;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.client-balance .balance::before {
+    content: '💰';
+}
+
+.client-balance .spent::before {
+    content: '💸';
+}
+
+.freelancer-balance .balance::before {
+    content: '💰';
+}
+
+.freelancer-balance .earned::before {
+    content: '💵';
+}
+
+.client-balance .loading,
+.freelancer-balance .loading {
+    color: #f1c40f;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.client-balance .error,
+.freelancer-balance .error {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
 @media (max-width: 768px) {
   .nav-links {
     display: none;
@@ -121,5 +173,13 @@
 
   .hamburger-menu {
     display: block;
+  }
+
+  .client-balance,
+  .freelancer-balance {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: center;
   }
 }
