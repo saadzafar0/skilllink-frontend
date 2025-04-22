@@ -1,0 +1,75 @@
+/* src/pages/Login.css */
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  background-color: black;
+}
+
+.login-box {
+  background-color: #111;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-box input:focus {
+  outline: none;
+  border-color: #40e0d0; /* Turquoise */
+  box-shadow: 0 0 5px #40e0d0; /* Turquoise glow */
+}
+
+.login-box h2 {
+  color: #40e0d0; /* Turquoise */
+  margin-bottom: 0.5rem;
+}
+
+.login-box p {
+  color: #40e0d0; /* Turquoise */
+  margin-bottom: 2rem;
+}
+
+.login-box input {
+  width: 92%;
+  padding: 0.9rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: black;
+  color: #40e0d0; /* Turquoise */
+  border: 2px solid #40e0d0; /* Turquoise outline */
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.login-box button:hover {
+  background-color: #40e0d0; /* Turquoise */
+  color: black;
+}
+
+.signup-link {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.signup-link a {
+  color: #40e0d0; /* Turquoise */
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}

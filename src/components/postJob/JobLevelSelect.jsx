@@ -1,4 +1,5 @@
 import React from 'react';
+import './JobLevelSelect.css';
 
 const JobLevelSelect = ({ jobLevel, setJobLevel }) => {
   const handleChange = (e) => {
@@ -6,20 +7,18 @@ const JobLevelSelect = ({ jobLevel, setJobLevel }) => {
   };
 
   return (
-    <div className="mb-6 flex flex-col text-white font-sans">
-      <label htmlFor="job-level" className="font-semibold mb-2 text-[#04ffcd]">
-        Job Level <span className="text-red-500 ml-1">*</span>
-      </label>
+    <div className="job-level-select">
+      <label htmlFor="job-level">Job Level <span className="required">*</span></label>
       <select
         id="job-level"
         value={jobLevel}
         onChange={handleChange}
-        className="bg-[#121212] text-white border border-[#04ffcd] py-3 px-4 rounded-lg text-lg w-full outline-none transition-all ease-in-out focus:border-[#1abc9c]"
+        className="select-input"
       >
-        <option value="Beginner" className="bg-[#121212] text-white">Beginner</option>
-        <option value="Intermediate" className="bg-[#121212] text-white">Intermediate</option>
-        <option value="Advanced" className="bg-[#121212] text-white">Advanced</option>
-        <option value="Expert" className="bg-[#121212] text-white">Expert</option>
+        <option value="Beginner">Beginner</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Advanced">Advanced</option>
+        <option value="Expert">Expert</option>
       </select>
     </div>
   );

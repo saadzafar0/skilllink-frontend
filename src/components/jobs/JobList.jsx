@@ -33,19 +33,18 @@ const JobList = ({ filters }) => {
     return () => abortController.abort();
   }, [filters]);
 
-  if (loading) return <div className="text-center text-white py-6">Loading jobs...</div>;
-  if (jobs.length === 0) return <div className="text-center text-white py-6">No jobs found</div>;
-
+  if (loading) return <div className="loading">Loading jobs...</div>;
+  if (jobs.length === 0) return <div className="no-jobs">No jobs found</div>;
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 p-8 bg-[#0f131a] rounded-lg min-h-[70vh]">
+    <div className="job-list-container">
       {jobs.length > 0 ? (
         jobs.map((job) => (
           <JobCard key={job.jobID} job={job} />
         ))
       ) : (
-        <div className="col-span-full text-center text-[#4a5568] py-16">
-          <h3 className="text-[#1abc9c] mb-4 text-xl font-semibold">No jobs found matching your criteria</h3>
-          <p className="text-sm">Try adjusting your filters</p>
+        <div className="no-jobs">
+          <h3>No jobs found matching your criteria</h3>
+          <p>Try adjusting your filters</p>
         </div>
       )}
     </div>

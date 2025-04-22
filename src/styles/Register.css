@@ -1,0 +1,125 @@
+:root {
+  --primary-color: #1abc9c; /* Turquoise */
+  --secondary-color: #ffffff; /* White for text */
+  --input-bg: #222; /* Dark background for inputs */
+  --border-radius: 8px;
+  --font-size: 16px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #000; /* Black background */
+  margin: 0;
+  padding: 0;
+  color: var(--secondary-color); /* White text */
+}
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.register-form {
+  background-color: #111; /* Darker black for form */
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 400px;
+}
+
+h2 {
+  text-align: center;
+  color: var(--primary-color); /* Turquoise heading */
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  color: var(--secondary-color); /* White labels */
+  margin-bottom: 0.5rem;
+}
+
+input,
+select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.8rem;
+  border: 1px solid var(--primary-color); /* Turquoise border */
+  border-radius: var(--border-radius);
+  background-color: var(--input-bg); /* Dark input background */
+  color: var(--secondary-color); /* White text */
+  font-size: var(--font-size);
+}
+
+input:focus,
+select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+button.submit-btn {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #000; /* Solid black button */
+  color: var(--primary-color); /* Turquoise text */
+  border: 2px solid var(--primary-color); /* Turquoise outline */
+  border-radius: var(--border-radius);
+  font-size: var(--font-size);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button.submit-btn:hover {
+  background-color: var(--primary-color); /* Turquoise background */
+  color: #000; /* Black text */
+}
+
+button.submit-btn:disabled {
+  background-color: #333; /* Dark gray for disabled */
+  color: #777; /* Light gray text */
+  cursor: not-allowed;
+}
+
+.password-input-wrapper {
+  position: relative;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  padding-right: 2.5rem; /* Space for eye icon */
+}
+
+.eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--primary-color); /* Turquoise eye icon */
+  user-select: none;
+}
+
+@media (max-width: 600px) {
+  .register-form {
+    padding: 1.5rem;
+  }
+}
+
+.back-btn {
+  display: block;
+  margin: 1rem auto;
+  text-align: center;
+  background-color: #111;
+  color: var(--primary-color); /* Turquoise text */
+  text-decoration: none;
+  font-size: var(--font-size);
+}

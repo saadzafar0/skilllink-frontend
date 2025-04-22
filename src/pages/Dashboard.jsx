@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "../styles/Dashboard.css";
 
 const Dashboard = () => {
   const { user: currentUser } = useAuth();
@@ -12,10 +13,12 @@ const Dashboard = () => {
   const [jobsCount, setJobsCount] = useState(0);
   const [earnings, setEarnings] = useState(0);
   const [connects, setConnects] = useState(0);
+  const [activeJobs, setActiveJobs] = useState([]);
 
   useEffect(() => {
     if (!currentUser) return;
 
+    // Fetch proposals submitted by freelancer
     const fetchProposals = async () => {
       if (currentUser.accType === "Freelancer") {
         const res = await fetch(
@@ -23,20 +26,23 @@ const Dashboard = () => {
         );
         const data = await res.json();
         setProposals(data || []);
-        setJobsCount(data.length);
+        setJobsCount(data.length); // assuming each proposal = 1 applied job
       }
     };
 
+    // Fetch jobs posted by client
     const fetchClientJobs = async () => {
       if (currentUser.accType === "Client") {
         const res = await fetch(
           `http://localhost:4000/api/v1/jobs/client/${currentUser.userID}`
         );
         const data = await res.json();
-        setJobsCount(data.length);
+        setJobsCount(data.length); // Total number of jobs posted
+        setActiveJobs(data || []);
       }
     };
 
+    // Fetch unread messages count
     const fetchUnreadMessages = async () => {
       const res = await fetch(
         `http://localhost:4000/api/v1/dashboard/unread-messages/${currentUser.userID}`
@@ -44,7 +50,7 @@ const Dashboard = () => {
       const data = await res.json();
       setMessagesCount(data.count || 0);
     };
-
+    // Earnings - Earnings for freelancer or spent for client
     const fetchEarnings = async () => {
       if (currentUser.accType === "Freelancer") {
         const res = await fetch(
@@ -61,6 +67,7 @@ const Dashboard = () => {
         setEarnings(data.spent || 0);
       }
 
+      // totalConnects of a Freelancer
       if (currentUser.accType === "Freelancer") {
         const res = await fetch(
           `http://localhost:4000/api/v1/freelancer/totalConnects/${currentUser.userID}`
@@ -78,60 +85,64 @@ const Dashboard = () => {
   }, [currentUser]);
 
   return (
-    <div className="bg-gray-900 text-white p-8">
-      <main>
+    <div className="dashboard-container">
+      <main className="dashboard-main">
         {currentUser ? (
           <>
-            <section className="mb-8">
-              <h1 className="text-3xl font-bold">
-                Welcome back, {currentUser.name} 👋
-              </h1>
-              <h2 className="text-xl mt-2 text-gray-400">
+            <section className="dashboard-header">
+              <h1>Welcome back, {currentUser.name} 👋</h1>
+              <h2 className="activity-summary">
                 Here’s a quick summary of your activity
               </h2>
             </section>
 
-            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <section className="overview-section">
               {currentUser.accType === "Freelancer" && (
                 <div
-                  className="bg-purple-600 p-6 rounded-lg shadow-lg hover:shadow-xl cursor-pointer"
+                  className="overview-card purple"
                   onClick={() => navigate("/connects")}
+                  style={{ cursor: "pointer" }}
                 >
-                  <h3 className="text-xl">Connects</h3>
+                  <h3>Connects</h3>
                   <p>{connects} Available</p>
                 </div>
               )}
 
               <div
-                className="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl cursor-pointer"
+                className="overview-card dark"
                 onClick={() => navigate("/messages")}
+                style={{ cursor: "pointer" }}
               >
-                <h3 className="text-xl">Messages</h3>
+                <h3>Messages</h3>
                 <p>{messagesCount} Unread</p>
               </div>
 
               <div
-                className="bg-teal-500 p-6 rounded-lg shadow-lg hover:shadow-xl cursor-pointer"
+                className="overview-card turquoise"
                 onClick={() => navigate("/transactions")}
+                style={{ cursor: "pointer" }}
               >
-                <h3 className="text-xl">
-                  {currentUser.accType === "Client" ? "Spent" : "Earnings"}
+                <h3>
+                  {currentUser.accType === "Client" ? "Spent" : "Earnings"}{" "}
                 </h3>
                 <p>${earnings}</p>
               </div>
 
               <div
-                className="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl cursor-pointer"
+                className="overview-card dark"
                 onClick={() =>
                   navigate(
-                    currentUser.accType === "Client" ? "/post-job" : "/jobs"
+                    currentUser.accType === "Client"
+                      ? "/active-jobs"
+                      : "/proposals"
                   )
                 }
+                style={{ cursor: "pointer" }}
               >
-                <h3 className="text-xl">
+                <h3>
                   {currentUser.accType === "Client"
-                    ? "Active Proposals"
-                    : "Applied Jobs"}
+                    ? "Active Jobs"
+                    : "Applied Proposals"}
                 </h3>
                 <p>
                   {jobsCount}{" "}
@@ -140,85 +151,146 @@ const Dashboard = () => {
               </div>
             </section>
 
-            <section>
-              <h2 className="text-2xl font-bold mb-4">
-                {currentUser.accType === "Freelancer"
-                  ? "Recent Proposals"
-                  : "Recent Jobs"}
-              </h2>
-              {proposals.length > 0 ? (
-                proposals.slice(0, 2).map((p, i) => (
-                  <div
-                    key={i}
-                    className="bg-gray-800 p-6 rounded-lg shadow-lg mb-6 hover:shadow-xl"
-                  >
-                    <div>
-                      <h4 className="text-xl text-white">{p.title}</h4>
-                      <p className="text-gray-400">
-                        <strong>Status:</strong> {p.pStatus} |{" "}
-                        <strong>Bid:</strong> $
-                        {parseFloat(p.bidAmount).toFixed(2)} |{" "}
-                        <strong>Submitted:</strong>{" "}
-                        {new Date(p.submittedOn).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="mt-4 space-x-4">
-                      <button
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                        onClick={() => navigate(`/proposals/${p.proposalID}`)}
-                      >
-                        View
-                      </button>
-                      <button
-                        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                        onClick={() =>
-                          navigate(`/messages?receiverID=${p.clientID}`)
-                        }
-                      >
-                        Message
-                      </button>
-                      <button
-                        className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-                        onClick={async () => {
-                          const confirmDelete = window.confirm(
-                            "Delete this proposal?"
-                          );
-                          if (confirmDelete) {
-                            await fetch(
-                              `http://localhost:4000/api/v1/proposals/${p.proposalID}`,
-                              {
-                                method: "DELETE",
+            <section className="recent-section">
+              {currentUser.accType === "Freelancer" && (
+                <section className="recent-section">
+                  <h2>Recent Proposals</h2>
+                  {proposals.length > 0 ? (
+                    proposals.slice(0, 2).map((p, i) => (
+                      <div key={i} className="recent-card recent-proposal-card">
+                        <div className="proposal-info">
+                          <h4>{p.title}</h4>
+                          <p>
+                            <strong>Status:</strong> {p.pStatus} &nbsp;|&nbsp;
+                            <strong>Bid:</strong> $
+                            {parseFloat(p.bidAmount).toFixed(2)} &nbsp;|&nbsp;
+                            <strong>Submitted:</strong>{" "}
+                            {new Date(p.submittedOn).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div className="proposal-actions">
+                          <button
+                            className="btn-view"
+                            onClick={() =>
+                              navigate(`/proposals/${p.proposalID}`)
+                            }
+                          >
+                            View
+                          </button>
+                          <button
+                            className="btn-message"
+                            onClick={() =>
+                              navigate(`/messages?receiverID=${p.clientID}`)
+                            }
+                          >
+                            Message
+                          </button>
+                          <button
+                            className="btn-delete"
+                            onClick={async () => {
+                              const confirmDelete = window.confirm(
+                                "Delete this proposal?"
+                              );
+                              if (confirmDelete) {
+                                await fetch(
+                                  `http://localhost:4000/api/v1/proposals/${p.proposalID}`,
+                                  {
+                                    method: "DELETE",
+                                  }
+                                );
+                                setProposals((prev) =>
+                                  prev.filter(
+                                    (prop) => prop.proposalID !== p.proposalID
+                                  )
+                                );
                               }
-                            );
-                            setProposals((prev) =>
-                              prev.filter(
-                                (prop) => prop.proposalID !== p.proposalID
-                              )
-                            );
-                          }
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-gray-400">No recent activity found.</p>
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No recent proposals found.</p>
+                  )}
+                </section>
+              )}
+
+              {currentUser.accType === "Client" && (
+                <section className="recent-section">
+                  <h2>Recent Active Jobs</h2>
+                  {activeJobs.length > 0 ? (
+                    activeJobs.slice(0, 3).map((job, i) => (
+                      <div key={i} className="recent-card recent-proposal-card">
+                        <div className="proposal-info">
+                          <h4>{job.title}</h4>
+                          <p>
+                            <strong>Posted:</strong>{" "}
+                            {new Date(job.postedOn).toLocaleDateString()}{" "}
+                            &nbsp;|&nbsp;
+                            <strong>Est. Time:</strong> {job.estTime}{" "}
+                            &nbsp;|&nbsp;
+                            <strong>Connects:</strong> {job.connectsRequired}
+                          </p>
+                        </div>
+                        <div className="proposal-actions">
+                          <button
+                            className="btn-view"
+                            onClick={() => navigate(`/jobs/${job.jobID}`)}
+                          >
+                            View
+                          </button>
+                          <button
+                            className="btn-message"
+                            onClick={() =>
+                              navigate(`/messages?receiverID=${job.cID}`)
+                            }
+                          >
+                            Message
+                          </button>
+                          <button
+                            className="btn-delete"
+                            onClick={async () => {
+                              const confirmDelete =
+                                window.confirm("Delete this job?");
+                              if (confirmDelete) {
+                                await fetch(
+                                  `http://localhost:4000/api/v1/jobs/${job.jobID}`,
+                                  {
+                                    method: "DELETE",
+                                  }
+                                );
+                                setActiveJobs((prev) =>
+                                  prev.filter((j) => j.jobID !== job.jobID)
+                                );
+                                setJobsCount((prev) => prev - 1);
+                              }
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No recent jobs found.</p>
+                  )}
+                </section>
               )}
             </section>
 
-            <section className="mt-8">
+            <section className="dashboard-actions">
               {currentUser.accType === "Client" ? (
                 <button
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+                  className="primary-btn"
                   onClick={() => navigate("/post-job")}
                 >
                   Post a Job
                 </button>
               ) : (
                 <button
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+                  className="primary-btn"
                   onClick={() => navigate("/jobs")}
                 >
                   Browse Jobs
@@ -227,45 +299,40 @@ const Dashboard = () => {
             </section>
           </>
         ) : (
-          <div>
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold text-center">
-                Welcome to SkillLink!
-              </h1>
-              <p className="text-center text-gray-400">
+          <div className="guest-dashboard">
+            <div className="dashboard-header">
+              <h1>Welcome to SkillLink!</h1>
+              <p>
                 Connect with top professionals or find your next opportunity
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl text-white">For Freelancers</h3>
-                <p className="text-gray-400">
-                  Find exciting projects that match your skills
-                </p>
+
+            <div className="guest-actions">
+              <div className="action-card">
+                <h3>For Freelancers</h3>
+                <p>Find exciting projects that match your skills</p>
                 <button
                   onClick={() => navigate("/register?type=Freelancer")}
-                  className="bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg hover:bg-blue-700"
+                  className="action-button"
                 >
                   Join as Freelancer
                 </button>
               </div>
-              <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl text-white">For Clients</h3>
-                <p className="text-gray-400">
-                  Hire skilled professionals for your projects
-                </p>
+
+              <div className="action-card">
+                <h3>For Clients</h3>
+                <p>Hire skilled professionals for your projects</p>
                 <button
                   onClick={() => navigate("/register?type=Client")}
-                  className="bg-blue-600 text-white px-6 py-3 mt-4 rounded-lg hover:bg-blue-700"
+                  className="action-button"
                 >
-                  {" "}
-                  Join as Client{" "}
-                </button>{" "}
-              </div>{" "}
-            </div>{" "}
+                  Hire Talent
+                </button>
+              </div>
+            </div>
           </div>
-        )}{" "}
-      </main>{" "}
+        )}
+      </main>
     </div>
   );
 };

@@ -1,3 +1,6 @@
-@import "tailwindcss";
-
-
+.app-background {
+    background-color: #121212;
+    color: white; /* optional */
+    font-family: 'Segoe UI', sans-serif;
+  }
+  

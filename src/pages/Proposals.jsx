@@ -1,73 +1,78 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import "../styles/Proposals.css";
+import { useAuth } from "../context/AuthContext";
 
-const Proposals = ({ user }) => {
+const Proposals = () => {
+  const {user} = useAuth(); 
   const [proposals, setProposals] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProposals = async () => {
+      console.log(">>> fetchProposals running with user:", user);
+  
       try {
-        let response;
-
-        if (user.accType === "freelancer") {
-          response = await axios.get(`/api/proposals/freelancer/${user.userID}`);
-        } else if (user.accType === "client") {
-          const jobsRes = await axios.get(`/api/jobs/client/${user.userID}`);
-          const jobIDs = jobsRes.data.map((job) => job.jobID);
-
-          const allProposals = await Promise.all(
-            jobIDs.map((id) => axios.get(`/api/proposals/job/${id}`))
-          );
-
-          response = {
-            data: allProposals.flatMap((res) => res.data),
-          };
+        if (!user) {
+          console.warn("No user, skipping proposal fetch");
+          setLoading(false);
+          return;
         }
-
-        setProposals(response.data);
+  
+        let response;
+        if (user.accType === "Freelancer") {
+          response = await fetch(`http://localhost:4000/api/v1/proposals/freelancer/${user.userID}`);
+          const data = await response.json();
+          setProposals(data);
+        } else if (user.accType === "Client") {
+          const jobsRes = await fetch(`http://localhost:4000/api/v1/jobs/client/${user.userID}`);
+          const jobs = await jobsRes.json();
+          const jobIDs = jobs.map((job) => job.jobID);
+          console.log("Fetched jobs for client:", jobs);
+          const allProposals = [];
+          for (const jobID of jobIDs) {
+            try {
+              const propRes = await fetch(`http://localhost:4000/api/v1/proposals/job/${jobID}`);
+              if (!propRes.ok) throw new Error(`Failed to fetch proposals for job ${jobID}`);
+              const props = await propRes.json();
+              if (Array.isArray(props)) { // Ensure props is an array
+                allProposals.push(...props);
+              }
+            } catch (error) {
+              console.error(`Error fetching proposals for job ${jobID}:`, error);
+            }
+          }
+          setProposals(allProposals);
+        }
       } catch (error) {
         console.error("Failed to fetch proposals", error);
       } finally {
         setLoading(false);
       }
     };
+  
+    if (user) {
+      console.log("Inside useEffect, user is:", user);
+      fetchProposals();
+    }
+  }, [user]);  
 
-    fetchProposals();
-  }, [user]);
-
-  if (loading) {
-    return <div className="text-center text-lg text-green-800">Loading proposals...</div>;
-  }
+  if (!user) return <div className="error">Please log in to view proposals.</div>;
+  if (loading) return <div className="loading">Loading proposals...</div>;
 
   return (
-    <div className="max-w-4xl mx-auto my-6 p-6 bg-green-50 rounded-xl shadow-md font-sans">
-      <h2 className="text-center text-green-800 text-2xl font-semibold mb-6">Your Proposals</h2>
-
+    <div className="proposals-container">
+      <h2>Your Proposals</h2>
       {proposals.length === 0 ? (
-        <p className="text-center text-green-700 text-lg py-6">No proposals found.</p>
+        <p className="no-proposals">No proposals found.</p>
       ) : (
-        <div className="flex flex-wrap justify-center gap-4">
-          {proposals.map((proposal) => (
-            <div
-              key={proposal.proposalID}
-              className="bg-white border-2 border-green-400 p-4 rounded-lg w-72 hover:bg-green-50 transition-colors"
-            >
-              <p className="text-green-800 text-sm mb-1">
-                <strong>Job ID:</strong> {proposal.jobID}
-              </p>
-              <p className="text-green-800 text-sm mb-1">
-                <strong>Bid:</strong> ${proposal.bidAmount}
-              </p>
-              <p className="text-green-800 text-sm mb-1">
-                <strong>Status:</strong> {proposal.pStatus}
-              </p>
-              <p className="text-green-800 text-sm mb-1">
-                <strong>Submitted:</strong> {new Date(proposal.submittedOn).toLocaleDateString()}
-              </p>
-              <p className="text-green-800 text-sm">
-                <strong>Cover Letter:</strong> {proposal.coverLetter}
-              </p>
+        <div className="proposal-list">
+          {proposals.map((p) => (
+            <div key={p.proposalID} className="proposal-card">
+              <p><strong>Job ID:</strong> {p.jobID}</p>
+              <p><strong>Bid:</strong> ${p.bidAmount}</p>
+              <p><strong>Status:</strong> {p.pStatus}</p>
+              <p><strong>Submitted:</strong> {new Date(p.submittedOn).toLocaleDateString()}</p>
+              <p><strong>Cover Letter:</strong> {p.coverLetter}</p>
             </div>
           ))}
         </div>

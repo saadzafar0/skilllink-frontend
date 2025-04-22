@@ -1,0 +1,8 @@
+/* Styles for the JobTitle component */
+.job-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #00fffb;
+    margin-bottom: 20px;
+  }
+  

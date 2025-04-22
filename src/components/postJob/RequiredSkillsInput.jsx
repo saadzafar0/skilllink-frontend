@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './RequiredSkillsInput.css';
 
 const RequiredSkillsInput = ({ targetSkills, setTargetSkills }) => {
   const [skill, setSkill] = useState("");
@@ -16,11 +17,9 @@ const RequiredSkillsInput = ({ targetSkills, setTargetSkills }) => {
   };
 
   return (
-    <div className="mb-6 flex flex-col text-white font-sans">
-      <label htmlFor="skills" className="font-semibold mb-2 text-[#04ffcd]">
-        Required Skills <span className="text-red-500 ml-1">*</span>
-      </label>
-      <div className="skills-input-container flex gap-2 items-center">
+    <div className="required-skills-input">
+      <label htmlFor="skills">Required Skills <span className="required">*</span></label>
+      <div className="skills-input-container">
         <input
           id="skills"
           type="text"
@@ -28,23 +27,16 @@ const RequiredSkillsInput = ({ targetSkills, setTargetSkills }) => {
           onChange={(e) => setSkill(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleAddSkill(e)} // Add skill on "Enter"
           placeholder="Add skill and press Enter"
-          className="bg-[#121212] text-white border border-[#04ffcd] py-3 px-4 rounded-lg text-lg outline-none transition-all ease-in-out focus:border-[#1abc9c]"
         />
-        <button 
-          onClick={handleAddSkill} 
-          className="bg-[#16a085] text-white py-2 px-4 rounded-lg font-semibold hover:bg-[#1abc9c]"
-        >
+        <button onClick={handleAddSkill} className="add-skill-btn">
           + Add
         </button>
       </div>
-      <div className="selected-skills flex flex-wrap gap-2 mt-4">
+      <div className="selected-skills">
         {targetSkills.map((s, index) => (
-          <div key={index} className="skill-tag bg-[#34495e] py-2 px-3 rounded-md flex items-center gap-2">
-            <span className="text-white text-sm">{s}</span>
-            <button 
-              onClick={() => handleRemoveSkill(s)} 
-              className="bg-none border-none text-[#e74c3c] text-xl cursor-pointer"
-            >
+          <div key={index} className="skill-tag">
+            <span>{s}</span>
+            <button onClick={() => handleRemoveSkill(s)} className="remove-skill-btn">
               &times;
             </button>
           </div>

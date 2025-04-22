@@ -1,0 +1,65 @@
+.proposals-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #303030; /* Changed to #111 */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  color: #40e0d0; /* Turquoise text for the container */
+}
+
+h2 {
+  text-align: center;
+  color: #40e0d0; /* Turquoise */
+}
+
+.no-proposals {
+  text-align: center;
+  color: #40e0d0; /* Turquoise */
+  font-size: 1.2em;
+  padding: 20px;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+  color: #40e0d0; /* Turquoise */
+}
+
+.proposal-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.proposal-card {
+  background-color: #000; /* Black inside */
+  border: 2px solid #40e0d0; /* Turquoise outline */
+  color: #40e0d0; /* Turquoise text */
+  padding: 15px;
+  border-radius: 8px;
+  width: 300px;
+  transition: 0.3s;
+}
+.proposal-card:hover, .proposal-card:hover * {
+  background-color: #40e0d0; 
+  color: #000000 !important; 
+  border-color: #000000; 
+  border-radius: 8px;
+  transform: scale(1.05); 
+}
+
+.proposal-card p {
+  margin: 8px 0;
+  color: #40e0d0; /* Turquoise */
+  font-size: 0.95em;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .proposal-card {
+    width: 90%;
+  }
+}

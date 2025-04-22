@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/Register.css";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -7,28 +8,36 @@ const Register = () => {
     password: "",
     country: "",
     accType: "freelancer",
+    // Freelancer fields
     niche: "",
     hourlyRate: "",
     qualification: "",
     about: "",
+    // Client fields
     companyName: "",
-    companyAddress: ""
+    companyAddress: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(1); // 1 for basic info, 2 for account-specific info
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
     }));
   };
 
   const handleNext = (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.password || !formData.country) {
+    // Validate basic fields first
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.country
+    ) {
       alert("Please fill all required fields");
       return;
     }
@@ -37,15 +46,17 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const payload = {
         name: formData.name,
         email: formData.email,
         password: formData.password,
         country: formData.country,
-        accType: formData.accType
+        accType: formData.accType,
       };
 
+      // Add account-specific fields
       if (formData.accType === "freelancer") {
         payload.niche = formData.niche;
         payload.hourlyRate = formData.hourlyRate;
@@ -58,16 +69,22 @@ const Register = () => {
         payload.about = formData.about;
       }
 
-      const response = await fetch("http://localhost:4000/api/v1/user/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        "http://localhost:4000/api/v1/user/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
         alert("Registered successfully!");
+        // Reset form
         setFormData({
           name: "",
           email: "",
@@ -79,14 +96,14 @@ const Register = () => {
           qualification: "",
           about: "",
           companyName: "",
-          companyAddress: ""
+          companyAddress: "",
         });
         setStep(1);
       } else {
         alert(data.message || "Registration failed");
       }
-    } catch (err) {
-      console.error("Registration error:", err);
+    } catch (error) {
+      console.error("Error during registration:", error);
       alert("Something went wrong. Please try again.");
     }
   };
@@ -96,117 +113,205 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+    <div className="register-container">
       <form
+        className="register-form"
         onSubmit={step === 1 ? handleNext : handleSubmit}
-        className="bg-white p-6 rounded-xl shadow-md w-full max-w-lg"
       >
-        <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
+        <h2>Register</h2>
 
         {step === 1 ? (
           <>
-            <Input label="Name" name="name" value={formData.name} onChange={handleChange} />
-            <Input label="Email" name="email" type="email" value={formData.email} onChange={handleChange} />
-            <div className="mb-4">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-              <div className="flex items-center border border-gray-300 rounded-lg">
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group password-group">
+              <label htmlFor="password">Password</label>
+              <div className="password-input-wrapper">
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
                   id="password"
-                  className="w-full p-2 rounded-l-lg outline-none"
                   value={formData.password}
                   onChange={handleChange}
+                  required
                 />
-                <span
-                  className="px-3 cursor-pointer"
-                  onClick={togglePasswordVisibility}
-                >
+                <span className="eye-icon" onClick={togglePasswordVisibility}>
                   {showPassword ? "🙈" : "👁️"}
                 </span>
               </div>
             </div>
-            <Input label="Country" name="country" value={formData.country} onChange={handleChange} />
 
-            <div className="mb-4">
-              <label htmlFor="accType" className="block text-sm font-medium text-gray-700 mb-1">Account Type</label>
+            <div className="form-group">
+              <label htmlFor="country">Country</label>
+              <input
+                type="text"
+                name="country"
+                id="country"
+                value={formData.country}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="accType">Account Type</label>
               <select
                 name="accType"
                 id="accType"
                 value={formData.accType}
                 onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-lg"
+                required
               >
                 <option value="freelancer">Freelancer</option>
                 <option value="client">Client</option>
               </select>
             </div>
           </>
-        ) : formData.accType === "freelancer" ? (
-          <>
-            <Input label="Niche/Specialization" name="niche" value={formData.niche} onChange={handleChange} />
-            <Input label="Hourly Rate ($)" name="hourlyRate" type="number" value={formData.hourlyRate} onChange={handleChange} />
-            <Input label="Qualifications" name="qualification" value={formData.qualification} onChange={handleChange} />
-            <Textarea label="About You" name="about" value={formData.about} onChange={handleChange} />
-          </>
         ) : (
           <>
-            <Input label="Company Name" name="companyName" value={formData.companyName} onChange={handleChange} />
-            <Input label="Company Address" name="companyAddress" value={formData.companyAddress} onChange={handleChange} />
-            <Input label="Your Qualification" name="qualification" value={formData.qualification} onChange={handleChange} />
-            <Textarea label="About Your Company" name="about" value={formData.about} onChange={handleChange} />
+            {formData.accType === "freelancer" ? (
+              <>
+                <div className="form-group">
+                  <label htmlFor="niche">Niche/Specialization</label>
+                  <input
+                    type="text"
+                    name="niche"
+                    id="niche"
+                    value={formData.niche}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="hourlyRate">Hourly Rate ($)</label>
+                  <input
+                    type="number"
+                    name="hourlyRate"
+                    id="hourlyRate"
+                    value={formData.hourlyRate}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="qualification">Qualifications</label>
+                  <input
+                    type="text"
+                    name="qualification"
+                    id="qualification"
+                    value={formData.qualification}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="about">About You</label>
+                  <textarea
+                    name="about"
+                    id="about"
+                    value={formData.about}
+                    onChange={handleChange}
+                    required
+                    style={{
+                      backgroundColor: "#111",
+                      color: "#fff",
+                      width: "390px",
+                      height: "150px",
+                      border: "2px solid #1abc9c",
+                    }}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="form-group">
+                  <label htmlFor="companyName">Company Name</label>
+                  <input
+                    type="text"
+                    name="companyName"
+                    id="companyName"
+                    value={formData.companyName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="companyAddress">Company Address</label>
+                  <input
+                    type="text"
+                    name="companyAddress"
+                    id="companyAddress"
+                    value={formData.companyAddress}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="qualification">Your Qualification</label>
+                  <input
+                    type="text"
+                    name="qualification"
+                    id="qualification"
+                    value={formData.qualification}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="about">About Your Company</label>
+                  <textarea
+                    name="about"
+                    id="about"
+                    value={formData.about}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </>
+            )}
           </>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-2 mt-6">
-          <button type="submit" className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg">
-            {step === 1 ? "Next" : "Register"}
+        <button type="submit" className="submit-btn">
+          {step === 1 ? "Next" : "Register"}
+        </button>
+
+        {step === 2 && (
+          <button type="button" className="back-btn" onClick={() => setStep(1)}>
+            Back
           </button>
-          {step === 2 && (
-            <button
-              type="button"
-              onClick={() => setStep(1)}
-              className="w-full sm:w-auto bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded-lg"
-            >
-              Back
-            </button>
-          )}
-        </div>
+        )}
       </form>
     </div>
   );
 };
-
-// Reusable Input component
-const Input = ({ label, name, value, onChange, type = "text" }) => (
-  <div className="mb-4">
-    <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-    <input
-      type={type}
-      name={name}
-      id={name}
-      value={value}
-      onChange={onChange}
-      className="w-full p-2 border border-gray-300 rounded-lg"
-      required
-    />
-  </div>
-);
-
-// Reusable Textarea component
-const Textarea = ({ label, name, value, onChange }) => (
-  <div className="mb-4">
-    <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-    <textarea
-      name={name}
-      id={name}
-      value={value}
-      onChange={onChange}
-      className="w-full p-2 border border-gray-300 rounded-lg"
-      rows="4"
-      required
-    />
-  </div>
-);
 
 export default Register;

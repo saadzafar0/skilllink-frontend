@@ -1,0 +1,57 @@
+/* ActiveJobs.css */
+
+.active-jobs-page {
+    padding: 2rem;
+    background-color: #121212;
+    min-height: 100vh;
+    color: #222;
+  }
+  
+  .active-jobs-page h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #0ab3af;
+  }
+  
+  .active-jobs-content {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  /* Filters section */
+  .filters-container {
+    flex: 1;
+    max-width: 300px;;
+    max-height: 500px;
+    background-color: #1f1f1f;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+    padding: 1rem;
+  }
+  
+  .filters-container h3 {
+    font-size: 1.25rem;
+    color: #3edfff;
+    margin-bottom: 1rem;
+  }
+  
+  /* Job list section */
+  .job-list-container {
+    flex: 3;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  /* Responsive */
+  @media screen and (max-width: 768px) {
+    .active-jobs-content {
+      flex-direction: column;
+    }
+  
+    .filters-container {
+      max-width: 100%;
+    }
+  }
+  

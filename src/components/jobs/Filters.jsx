@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./Filters.css";
 
 const Filters = ({ onFilterChange }) => {
   const [filters, setFilters] = useState({
@@ -24,14 +25,12 @@ const Filters = ({ onFilterChange }) => {
   };
 
   return (
-    <div className="bg-gray-900 p-6 rounded-lg text-white w-64 font-sans">
-      <h3 className="mb-4 text-teal-400 text-xl">Filter Jobs</h3>
+    <div className="filters-container">
+      <h3>Filter Jobs</h3>
 
-      {/*  Keyword Filter */}
-      <div className="mb-5 flex flex-col">
-        <label htmlFor="keyword" className="mb-2 font-semibold text-teal-200">
-          Keyword
-        </label>
+      {/*  Keyword Filter (fixed to use text input) */}
+      <div className="filter-group">
+        <label htmlFor="keyword">Keyword</label>
         <input
           type="text"
           id="keyword"
@@ -39,21 +38,17 @@ const Filters = ({ onFilterChange }) => {
           value={filters.keyword}
           onChange={handleChange}
           placeholder="e.g. React, design..."
-          className="p-2 rounded-lg border-none focus:outline-none"
         />
       </div>
 
       {/* Job Level Filter */}
-      <div className="mb-5 flex flex-col">
-        <label htmlFor="level" className="mb-2 font-semibold text-teal-200">
-          Job Level
-        </label>
+      <div className="filter-group">
+        <label htmlFor="level">Job Level</label>
         <select
           id="level"
           name="level"
           value={filters.level}
           onChange={handleChange}
-          className="p-2 rounded-lg border-none focus:outline-none"
         >
           <option value="">Any</option>
           <option value="Beginner">Beginner</option>
@@ -64,8 +59,8 @@ const Filters = ({ onFilterChange }) => {
       </div>
 
       {/* Connects Range Filter */}
-      <div className="mb-5 flex flex-col">
-        <label htmlFor="connects" className="font-semibold text-teal-200">
+      <div className="filter-group">
+        <label htmlFor="connects">
           Max Connects Required: <span>{filters.connects}</span>
         </label>
         <input
@@ -76,25 +71,21 @@ const Filters = ({ onFilterChange }) => {
           max="100"
           value={filters.connects || 100}
           onChange={handleChange}
-          className="mt-2"
         />
-        <div className="flex justify-between text-xs text-teal-300 mt-1">
+        <div className="range-labels">
           <span>1</span>
           <span>100</span>
         </div>
       </div>
 
       {/* Sort By Filter */}
-      <div className="mb-5 flex flex-col">
-        <label htmlFor="sortBy" className="mb-2 font-semibold text-teal-200">
-          Sort By
-        </label>
+      <div className="filter-group">
+        <label htmlFor="sortBy">Sort By</label>
         <select
           id="sortBy"
           name="sortBy"
           value={filters.sortBy}
           onChange={handleChange}
-          className="p-2 rounded-lg border-none focus:outline-none"
         >
           <option value="">Default</option>
           <option value="newest">Newest</option>

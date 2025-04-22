@@ -1,7 +1,8 @@
+// JobTitle.jsx
 import React from "react";
-
+import "./JobTitle.css"; 
 const JobTitle = ({ title }) => (
-  <h1 className="text-2xl font-bold text-cyan-300 mb-5">{title}</h1>
+  <h1 className="job-title">{title}</h1>
 );
 
 export default JobTitle;

@@ -1,0 +1,40 @@
+.job-title-input {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    color: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .job-title-input label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #04ffcd;
+  }
+  
+  .job-title-input .required {
+    color: #e74c3c;
+    margin-left: 4px;
+  }
+  
+  .job-title-input input {
+    background-color: #121212;
+    color: #ffffff;
+    border: 1px solid #04ffcd;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .job-title-input input:focus {
+    border-color: #1abc9c;
+  }
+  
+  .job-title-input small {
+    margin-top: 0.3rem;
+    color: #888;
+    font-size: 0.85rem;
+  }
+  

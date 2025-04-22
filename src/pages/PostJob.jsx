@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import "../styles/PostJob.css";
 import JobTitleInput from "../components/postJob/JobTitleInput";
 import JobDescriptionInput from "../components/postJob/JobDescriptionInput";
 import SkillTags from "../components/postJob/RequiredSkillsInput";
 import EstimatedTimeInput from "../components/postJob/EstimatedTimeInput";
 import JobLevelSelect from "../components/postJob/JobLevelSelect";
 import ConnectsInput from "../components/postJob/ConnectsRequiredInput";
-import { useAuth } from "../context/AuthContext";
+import PriceInput from "../components/postJob/PriceInput"; // ✅ import new component
+import { useAuth } from '../context/AuthContext';
 import axios from "axios";
 
 const PostJob = () => {
@@ -15,6 +17,7 @@ const PostJob = () => {
   const [estTime, setEstTime] = useState("1 week");
   const [jobLevel, setJobLevel] = useState("Beginner");
   const [connectsRequired, setConnectsRequired] = useState(1);
+  const [price, setPrice] = useState(100); // ✅ new state
   const [statusMessage, setStatusMessage] = useState("");
   const { user } = useAuth();
 
@@ -33,6 +36,7 @@ const PostJob = () => {
       estTime,
       jobLevel,
       connectsRequired,
+      price, // ✅ include price in payload
     };
 
     try {
@@ -42,12 +46,14 @@ const PostJob = () => {
         },
       });
       setStatusMessage("Job posted successfully!");
+      // Reset form
       setTitle("");
       setDescription("");
       setTargetSkills([]);
       setEstTime("1 week");
       setJobLevel("Beginner");
       setConnectsRequired(1);
+      setPrice(100); // ✅ reset
     } catch (error) {
       console.error("Error posting job:", error);
       setStatusMessage("Failed to post job. Try again.");
@@ -55,23 +61,18 @@ const PostJob = () => {
   };
 
   return (
-    <div className="bg-[#0a141e] text-white p-6 md:p-12 rounded-xl max-w-4xl mx-auto mt-8 font-sans">
-      <h1 className="text-[#04ffcd] text-center text-3xl md:text-4xl font-bold mb-8">Post a Job</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <div className="post-job-container">
+      <h1>Post a Job</h1>
+      <form onSubmit={handleSubmit} className="post-job-form">
         <JobTitleInput title={title} setTitle={setTitle} />
         <JobDescriptionInput description={description} setDescription={setDescription} />
         <SkillTags targetSkills={targetSkills} setTargetSkills={setTargetSkills} />
         <EstimatedTimeInput estTime={estTime} setEstTime={setEstTime} />
         <JobLevelSelect jobLevel={jobLevel} setJobLevel={setJobLevel} />
         <ConnectsInput connectsRequired={connectsRequired} setConnectsRequired={setConnectsRequired} />
-
-        <button
-          type="submit"
-          className="bg-teal-500 hover:bg-teal-600 transition-colors duration-300 text-white py-3 px-6 text-lg rounded-md mt-6"
-        >
-          Post Job
-        </button>
-        {statusMessage && <p className="text-sm text-center mt-4">{statusMessage}</p>}
+        <PriceInput price={price} setPrice={setPrice} /> {/* ✅ New input field */}
+        <button type="submit" className="submit-btn">Post Job</button>
+        {statusMessage && <p className="status-msg">{statusMessage}</p>}
       </form>
     </div>
   );
