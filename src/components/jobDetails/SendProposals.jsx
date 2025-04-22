@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./SendProposals.css";
 
-const SendProposal = ({ jobid, freelancerID }) => {
+const SendProposal = ({ jobid, freelancerID, onSubmit }) => {
   const [bidAmount, setBidAmount] = useState("");
   const [coverLetter, setCoverLetter] = useState("");
   const [loading, setLoading] = useState(false);
@@ -9,6 +9,12 @@ const SendProposal = ({ jobid, freelancerID }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!freelancerID) {
+      setMessage("Error: You must be logged in to submit a proposal");
+      return;
+    }
+    
     setLoading(true);
     setMessage("");
 
@@ -22,8 +28,8 @@ const SendProposal = ({ jobid, freelancerID }) => {
           freelancerID: parseInt(freelancerID),
           jobID: parseInt(jobid),
           bidAmount: parseInt(bidAmount),
-          coverLetter,
-          pStatus: "pending", // Or any default status
+          coverLetter
+          // Removed pStatus as it's not handled in the backend
         }),
       });
 
@@ -31,7 +37,11 @@ const SendProposal = ({ jobid, freelancerID }) => {
       if (!response.ok) throw new Error(data.error || "Submission failed");
 
       setMessage("Proposal submitted successfully!");
-      if (onSubmit) onSubmit({ bidAmount, coverLetter });
+      
+      // Call the onSubmit callback if provided
+      if (onSubmit) {
+        onSubmit({ bidAmount, coverLetter, proposalID: data.proposalID });
+      }
 
       // Reset form
       setBidAmount("");

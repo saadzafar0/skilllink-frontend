@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"; // ← Add this
+import { useParams } from "react-router-dom";
 import JobTitle from "../components/jobDetails/JobTitle";
 import ClientInfo from "../components/jobDetails/ClientInfo";
 import JobDescription from "../components/jobDetails/JobDescription";
@@ -11,9 +11,8 @@ import { useAuth } from "../context/AuthContext";
 import "../styles/JobDetails.css";
 
 const JobDetails = () => {
-  const {user : currentUser} = useAuth()
-
-  const { jobId } = useParams(); // ← Get jobId from the route
+  const { user: currentUser } = useAuth();
+  const { jobId } = useParams();
   const [jobDetails, setJobDetails] = useState(null);
 
   useEffect(() => {
@@ -41,6 +40,11 @@ const JobDetails = () => {
     return <div>Loading...</div>;
   }
 
+  const handleProposalSubmit = (proposalData) => {
+    console.log("Proposal submitted:", proposalData);
+    // Handle any post-submission logic here
+  };
+
   return (
     <div className="job-details-container">
       <JobTitle title={jobDetails.title} />
@@ -60,9 +64,9 @@ const JobDetails = () => {
       
       <SendProposal
         jobid={jobId}
-        freelancerID={currentUser} // Replace with actual logged-in freelancer ID
+        freelancerID={currentUser?.id} // Pass just the ID, not the entire user object
+        onSubmit={handleProposalSubmit} // Add the missing onSubmit prop
       />
-
     </div>
   );
 };
