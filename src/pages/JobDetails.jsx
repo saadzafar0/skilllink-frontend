@@ -6,9 +6,13 @@ import JobDescription from "../components/jobDetails/JobDescription";
 import JobDetailsInfo from "../components/jobDetails/JobDetailsInfo";
 import SkillsList from "../components/jobDetails/SkillsList";
 import SendProposal from "../components/jobDetails/SendProposals";
+import { useAuth } from "../context/AuthContext";
+
 import "../styles/JobDetails.css";
 
 const JobDetails = () => {
+  const {user : currentUser} = useAuth()
+
   const { jobId } = useParams(); // ← Get jobId from the route
   const [jobDetails, setJobDetails] = useState(null);
 
@@ -16,7 +20,9 @@ const JobDetails = () => {
     console.log("Fetching job details for jobId:", jobId);
     const fetchJobDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/api/v1/jobs/${jobId}`);
+        const response = await fetch(
+          `http://localhost:4000/api/v1/jobs/${jobId}`
+        );
         if (!response.ok) {
           const errText = await response.text();
           throw new Error(`Server responded with: ${errText}`);
@@ -51,7 +57,12 @@ const JobDetails = () => {
         postedOn={jobDetails.postedOn}
       />
       <SkillsList skills={jobDetails.targetSkills?.split(",")} />
-      <SendProposal onSubmit={(proposal) => console.log(proposal)} />
+      
+      <SendProposal
+        jobid={jobId}
+        freelancerID={currentUser} // Replace with actual logged-in freelancer ID
+      />
+
     </div>
   );
 };
