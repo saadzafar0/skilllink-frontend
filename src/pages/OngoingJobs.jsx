@@ -28,7 +28,7 @@ const OngoingJobs = () => {
 
     const handleMarkComplete = async (jobId) => {
         try {
-            await axios.post(`http://localhost:4000/api/v1/jobs/${jobId}/complete`);
+            await axios.post(`http://localhost:4000/api/v1/jobs/complete/${jobId}`);
             // Refresh the jobs list
             const response = await axios.get(`http://localhost:4000/api/v1/jobs/ongoing/${user.userID}`);
             setJobs(response.data);
