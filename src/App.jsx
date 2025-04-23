@@ -22,6 +22,7 @@ import WithdrawFunds from "./pages/WithdrawFunds";
 import BuyConnects from "./pages/BuyConnects";
 import AddFunds from "./pages/AddFunds";
 import Profile from "./pages/Profile";
+import MessagesPage from "./pages/MessagesPage/MessagesPage";
 import './App.css';
 
 const App = () => {
@@ -52,6 +53,7 @@ const App = () => {
               <Route path="/buy-connects" element={<BuyConnects />} />
               <Route path="/add-funds" element={<AddFunds />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/messages" element={<MessagesPage />} />
             </Routes>
             <Footer />
           </div>
