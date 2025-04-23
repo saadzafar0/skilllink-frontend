@@ -1,4 +1,3 @@
-// App.jsx
 import { Routes, Route } from "react-router-dom";
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
@@ -13,6 +12,7 @@ import Proposals from "./pages/Proposals";
 import ActiveJobs from "./pages/ActiveJobs";
 import JobProposals from "./pages/JobProposals";
 import OngoingJobs from "./pages/OngoingJobs";
+import Transactions from "./pages/Transactions";
 // import NotFound from "./pages/NotFound";
 import './App.css';
 
@@ -34,6 +34,7 @@ const App = () => {
           <Route path="/active-jobs" element={<ActiveJobs />} />
           <Route path="/jobProposals/:jobId" element={<JobProposals />} />
           <Route path="/ongoingJobs" element={<OngoingJobs />} />
+          <Route path="/transactions" element={<Transactions />} />
 
 
         </Routes>

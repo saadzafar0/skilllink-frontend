@@ -1,9 +1,20 @@
+
+// Filters.jsx
 import React from "react";
 
 const Filters = ({ filters, onFilterChange }) => {
+  // Add default value to prevent errors if filters is undefined
+  const safeFilters = filters || {
+    search: "",
+    category: "",
+    minPrice: "",
+    maxPrice: "",
+    jobLevel: "",
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    onFilterChange({ ...filters, [name]: value });
+    onFilterChange({ ...safeFilters, [name]: value });
   };
 
   return (
@@ -16,7 +27,7 @@ const Filters = ({ filters, onFilterChange }) => {
           type="text"
           id="search"
           name="search"
-          value={filters.search}
+          value={safeFilters.search}
           onChange={handleChange}
           placeholder="Search jobs..."
           className="w-full px-4 py-2 bg-[#404040] text-[#c1faff] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1abc9c]"
@@ -24,20 +35,21 @@ const Filters = ({ filters, onFilterChange }) => {
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="category" className="block text-[#c1faff]">Category</label>
+        <label htmlFor="category" className="block text-[#c1faff]">Skills</label>
         <select
           id="category"
           name="category"
-          value={filters.category}
+          value={safeFilters.category}
           onChange={handleChange}
           className="w-full px-4 py-2 bg-[#404040] text-[#c1faff] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1abc9c]"
         >
-          <option value="">All Categories</option>
+          <option value="">All Skills</option>
           <option value="web">Web Development</option>
-          <option value="mobile">Mobile Development</option>
-          <option value="design">Design</option>
-          <option value="writing">Writing</option>
-          <option value="marketing">Marketing</option>
+          <option value="react">React</option>
+          <option value="node">Node.js</option>
+          <option value="mongodb">MongoDB</option>
+          <option value="business">Business Strategy</option>
+          <option value="engineering">Engineering</option>
         </select>
       </div>
 
@@ -47,7 +59,7 @@ const Filters = ({ filters, onFilterChange }) => {
           type="number"
           id="minPrice"
           name="minPrice"
-          value={filters.minPrice}
+          value={safeFilters.minPrice}
           onChange={handleChange}
           min="0"
           className="w-full px-4 py-2 bg-[#404040] text-[#c1faff] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1abc9c]"
@@ -60,7 +72,7 @@ const Filters = ({ filters, onFilterChange }) => {
           type="number"
           id="maxPrice"
           name="maxPrice"
-          value={filters.maxPrice}
+          value={safeFilters.maxPrice}
           onChange={handleChange}
           min="0"
           className="w-full px-4 py-2 bg-[#404040] text-[#c1faff] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1abc9c]"
@@ -72,14 +84,15 @@ const Filters = ({ filters, onFilterChange }) => {
         <select
           id="jobLevel"
           name="jobLevel"
-          value={filters.jobLevel}
+          value={safeFilters.jobLevel}
           onChange={handleChange}
           className="w-full px-4 py-2 bg-[#404040] text-[#c1faff] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1abc9c]"
         >
           <option value="">All Levels</option>
-          <option value="entry">Entry Level</option>
-          <option value="intermediate">Intermediate</option>
-          <option value="expert">Expert</option>
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Advanced">Advanced</option>
+          <option value="Expert">Expert</option>
         </select>
       </div>
     </div>

@@ -1,3 +1,4 @@
+// Jobs.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import JobList from "../components/jobs/JobList";
@@ -34,11 +35,19 @@ const Jobs = () => {
   };
 
   const filteredJobs = jobs.filter((job) => {
-    const matchesSearch = job.title.toLowerCase().includes(filters.search.toLowerCase());
-    const matchesCategory = !filters.category || job.category === filters.category;
-    const matchesMinPrice = !filters.minPrice || job.price >= parseInt(filters.minPrice);
-    const matchesMaxPrice = !filters.maxPrice || job.price <= parseInt(filters.maxPrice);
-    const matchesJobLevel = !filters.jobLevel || job.jobLevel === filters.jobLevel;
+    // Changed from job.title to job.Title to match the API response format
+    const matchesSearch = job.Title && job.Title.toLowerCase().includes(filters.search.toLowerCase());
+    
+    // Use targetSkills for category filtering
+    const matchesCategory = !filters.category || 
+      (job.targetSkills && job.targetSkills.toLowerCase().includes(filters.category.toLowerCase()));
+    
+    // Added null check for job.price
+    const matchesMinPrice = !filters.minPrice || (job.price !== null && job.price >= parseInt(filters.minPrice));
+    const matchesMaxPrice = !filters.maxPrice || (job.price !== null && job.price <= parseInt(filters.maxPrice));
+    
+    // Added null check for job.jobLevel
+    const matchesJobLevel = !filters.jobLevel || (job.jobLevel && job.jobLevel === filters.jobLevel);
 
     return matchesSearch && matchesCategory && matchesMinPrice && matchesMaxPrice && matchesJobLevel;
   });
@@ -57,9 +66,10 @@ const Jobs = () => {
         <h1 className="text-4xl font-bold text-[#1abc9c] mb-8">Available Jobs</h1>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
-            <Filters onFilterChange={handleFilterChange} />
+            <Filters filters={filters} onFilterChange={handleFilterChange} />
           </div>
           <div className="lg:col-span-3">
+            {/* Pass the filtered jobs directly to JobList */}
             <JobList jobs={filteredJobs} />
           </div>
         </div>
