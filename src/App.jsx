@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import Jobs from "./pages/Jobs";
+import BrowseJobs from "./pages/BrowseJobs";
 import JobDetails from "./pages/JobDetails";
 import PostJob from "./pages/PostJob";
 import Proposals from "./pages/Proposals";
@@ -27,7 +27,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/jobs" element={<Jobs />} />
+          <Route path="/browse-jobs" element={<BrowseJobs />} />
           <Route path="/jobs/:jobID" element={<JobDetails />} />
           <Route path="/post-job" element={<PostJob />} />
           <Route path="/proposals" element={<Proposals />} />
@@ -35,6 +35,7 @@ const App = () => {
           <Route path="/jobProposals/:jobId" element={<JobProposals />} />
           <Route path="/ongoingJobs" element={<OngoingJobs />} />
           <Route path="/transactions" element={<Transactions />} />
+          <Route path="/submission/:jobId" element={<Transactions />} />
 
 
         </Routes>

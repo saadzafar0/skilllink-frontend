@@ -4,7 +4,7 @@ import axios from "axios";
 import JobList from "../components/jobs/JobList";
 import Filters from "../components/jobs/Filters";
 
-const Jobs = () => {
+const BrowseJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
@@ -78,4 +78,4 @@ const Jobs = () => {
   );
 };
 
-export default Jobs;
+export default BrowseJobs;
