@@ -16,6 +16,9 @@ import OngoingFreelancerJobs from "./pages/OngoingFreelancerJobs";
 import Submissions from "./pages/Submissions";
 import MakeSubmission from "./pages/MakeSubmission";
 import Transactions from "./pages/Transactions";
+import WithdrawFunds from "./pages/WithdrawFunds";
+import BuyConnects from "./pages/BuyConnects";
+import AddFunds from "./pages/AddFunds";
 // import NotFound from "./pages/NotFound";
 import './App.css';
 
@@ -42,6 +45,9 @@ const App = () => {
           <Route path="/make-submission/:jobId" element={<MakeSubmission />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/submission/:jobId" element={<Transactions />} />
+          <Route path="/withdraw-funds" element={<WithdrawFunds />} />
+          <Route path="/buy-connects" element={<BuyConnects />} />
+          <Route path="/add-funds" element={<AddFunds />} />
 
 
         </Routes>

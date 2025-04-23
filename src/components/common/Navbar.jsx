@@ -70,7 +70,9 @@ const Navbar = () => {
       </div>
 
       <ul className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex md:items-center gap-5 m-0 p-0 list-none absolute md:relative top-16 md:top-0 right-0 bg-[#111] md:bg-transparent flex-col md:flex-row w-48 md:w-auto p-5 md:p-0 rounded-lg md:rounded-none`}>
-        <li><Link to="/" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Home</Link></li>
+        {!user && (
+          <li><Link to="/" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Home</Link></li>
+        )}
         
         {/* Client Navigation */}
         {user && user.accType && user.accType.toLowerCase() === 'client' && (
@@ -91,6 +93,8 @@ const Navbar = () => {
             <li><Link to="/proposals" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">My Proposals</Link></li>
             <li><Link to="/ongoingFreelancerJobs" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Ongoing Jobs</Link></li>
             <li><Link to="/transactions" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Transactions</Link></li>
+            <li><Link to="/withdraw-funds" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Withdraw Funds</Link></li>
+            <li><Link to="/buy-connects" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Buy Connects</Link></li>
           </>
         )}
 
