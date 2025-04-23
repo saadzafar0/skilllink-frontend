@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const OngoingJobs = () => {
+const OngoingFreelancerJobs = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
     const [jobs, setJobs] = useState([]);
@@ -15,7 +15,7 @@ const OngoingJobs = () => {
 
         const fetchJobs = async () => {
             try {
-                const response = await axios.get(`http://localhost:4000/api/v1/jobs/ongoing/${user.userID}`);
+                const response = await axios.get(`http://localhost:4000/api/v1/jobs/ongoingfreelancerJobs/${user.userID}`);
                 setJobs(response.data);
             } catch (err) {
                 console.error(err);
@@ -28,21 +28,8 @@ const OngoingJobs = () => {
         fetchJobs();
     }, [user]);
 
-    const handleMarkComplete = async (jobId) => {
-        try {
-            await axios.post(`http://localhost:4000/api/v1/jobs/complete/${jobId}`);
-            // Refresh the jobs list
-            const response = await axios.get(`http://localhost:4000/api/v1/jobs/ongoing/${user.userID}`);
-            setJobs(response.data);
-        } catch (err) {
-            console.error('Failed to mark job as complete:', err);
-        }
-    };
-
-    const handleViewSubmissions = (jobId) => {
-        // Clean the jobId by taking the first part if it contains a comma
-        const cleanJobId = jobId.toString().split(',')[0];
-        navigate(`/submissions/${cleanJobId}`);
+    const handleSubmitWork = (jobId, proposalID) => {
+        navigate(`/make-submission/${jobId}`, { state: { proposalID } });
     };
 
     if (loading) return (
@@ -60,7 +47,7 @@ const OngoingJobs = () => {
     return (
         <div className="min-h-screen bg-[#111] py-8 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
-                <h1 className="text-4xl font-bold text-[#1abc9c] mb-8">Ongoing Jobs</h1>
+                <h1 className="text-4xl font-bold text-[#1abc9c] mb-8">My Ongoing Jobs</h1>
                 {jobs.length === 0 ? (
                     <div className="text-[#c1faff] text-center py-8">No ongoing jobs found.</div>
                 ) : (
@@ -87,15 +74,9 @@ const OngoingJobs = () => {
                                 <div className="flex gap-4">
                                     <button 
                                         className="px-4 py-2 bg-[#1abc9c] text-white rounded-lg hover:bg-[#16a085] transition-colors duration-300"
-                                        onClick={() => handleMarkComplete(job.jobID)}
+                                        onClick={() => handleSubmitWork(job.jobID, job.proposalID)}
                                     >
-                                        Mark Complete
-                                    </button>
-                                    <button 
-                                        className="px-4 py-2 bg-[#3498db] text-white rounded-lg hover:bg-[#2980b9] transition-colors duration-300"
-                                        onClick={() => handleViewSubmissions(job.jobID)}
-                                    >
-                                        View Submissions
+                                        Submit Work
                                     </button>
                                 </div>
                             </li>
@@ -107,4 +88,4 @@ const OngoingJobs = () => {
     );
 };
 
-export default OngoingJobs;
+export default OngoingFreelancerJobs; 

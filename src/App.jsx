@@ -12,6 +12,9 @@ import Proposals from "./pages/Proposals";
 import ActiveJobs from "./pages/ActiveJobs";
 import JobProposals from "./pages/JobProposals";
 import OngoingJobs from "./pages/OngoingJobs";
+import OngoingFreelancerJobs from "./pages/OngoingFreelancerJobs";
+import Submissions from "./pages/Submissions";
+import MakeSubmission from "./pages/MakeSubmission";
 import Transactions from "./pages/Transactions";
 // import NotFound from "./pages/NotFound";
 import './App.css';
@@ -34,6 +37,9 @@ const App = () => {
           <Route path="/active-jobs" element={<ActiveJobs />} />
           <Route path="/jobProposals/:jobId" element={<JobProposals />} />
           <Route path="/ongoingJobs" element={<OngoingJobs />} />
+          <Route path="/ongoingFreelancerJobs" element={<OngoingFreelancerJobs />} />
+          <Route path="/submissions/:jobId" element={<Submissions />} />
+          <Route path="/make-submission/:jobId" element={<MakeSubmission />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/submission/:jobId" element={<Transactions />} />
 

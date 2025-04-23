@@ -19,32 +19,14 @@ const Navbar = () => {
         if (accType === 'client') {
           try {
             const response = await axios.get(`http://localhost:4000/api/v1/Client/${user.userID}`);
-            
-            if (response.data && (response.data.amount !== undefined || response.data.spent !== undefined)) {
-              setClientDetails(response.data);
-            } else {
-              setError("Invalid client data received");
-            }
+            setClientDetails(response.data);
           } catch (error) {
             setError(error.message);
-            
-            // Try alternative endpoint if the first one fails
-            try {
-              const altResponse = await axios.get(`http://localhost:4000/api/v1/client/${user.userID}`);
-              setClientDetails(altResponse.data);
-            } catch (altError) {
-              // Silently fail on second attempt
-            }
           }
         } else if (accType === 'freelancer') {
           try {
             const response = await axios.get(`http://localhost:4000/api/v1/freelancer/${user.userID}`);
-            
-            if (response.data && (response.data.amount !== undefined || response.data.earned !== undefined)) {
-              setFreelancerDetails(response.data);
-            } else {
-              setError("Invalid freelancer data received");
-            }
+            setFreelancerDetails(response.data);
           } catch (error) {
             setError(error.message);
           }
@@ -54,6 +36,13 @@ const Navbar = () => {
 
     fetchUserDetails();
   }, [user]);
+
+  const getUserRole = () => {
+    if (user && user.accType) {
+      return user.accType.charAt(0).toUpperCase() + user.accType.slice(1).toLowerCase();
+    }
+    return '';
+  };
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
@@ -65,9 +54,40 @@ const Navbar = () => {
         <h1 className="text-[#1abc9c] text-2xl font-bold m-0">SkillLink</h1>
       </div>
 
+      <div className="md:hidden">
+        <button onClick={toggleMenu} className="text-white">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
       <ul className={`${isMenuOpen ? 'flex' : 'hidden'} md:flex md:items-center gap-5 m-0 p-0 list-none absolute md:relative top-16 md:top-0 right-0 bg-[#111] md:bg-transparent flex-col md:flex-row w-48 md:w-auto p-5 md:p-0 rounded-lg md:rounded-none`}>
         <li><Link to="/" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Home</Link></li>
-        <li><Link to="/dashboard" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Dashboard</Link></li>
+        
+        {/* Client Navigation */}
+        {user && user.accType && user.accType.toLowerCase() === 'client' && (
+          <>
+            <li><Link to="/dashboard" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Dashboard</Link></li>
+            <li><Link to="/post-job" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Post Job</Link></li>
+            <li><Link to="/active-jobs" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Active Jobs</Link></li>
+            <li><Link to="/ongoingJobs" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Ongoing Jobs</Link></li>
+            <li><Link to="/transactions" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Transactions</Link></li>
+          </>
+        )}
+
+        {/* Freelancer Navigation */}
+        {user && user.accType && user.accType.toLowerCase() === 'freelancer' && (
+          <>
+            <li><Link to="/dashboard" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Dashboard</Link></li>
+            <li><Link to="/browse-jobs" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Browse Jobs</Link></li>
+            <li><Link to="/proposals" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">My Proposals</Link></li>
+            <li><Link to="/ongoingFreelancerJobs" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Ongoing Jobs</Link></li>
+            <li><Link to="/transactions" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Transactions</Link></li>
+          </>
+        )}
+
+        {/* User Balance Display */}
         {user && user.accType && user.accType.toLowerCase() === 'client' && (
           <li className="flex flex-col md:flex-row gap-4 md:gap-6 items-center p-2 md:p-4 bg-[#1a1f2b] rounded-lg border border-[#1abc9c55]">
             {clientDetails ? (
@@ -82,9 +102,9 @@ const Navbar = () => {
             ) : (
               <span className="text-[#f1c40f] text-sm italic">Loading client details...</span>
             )}
-            {error && <span className="text-[#e74c3c] text-sm font-semibold">Error: {error}</span>}
           </li>
         )}
+
         {user && user.accType && user.accType.toLowerCase() === 'freelancer' && (
           <li className="flex flex-col md:flex-row gap-4 md:gap-6 items-center p-2 md:p-4 bg-[#1a1f2b] rounded-lg border border-[#1abc9c55]">
             {freelancerDetails ? (
@@ -95,23 +115,49 @@ const Navbar = () => {
                 <span className="flex items-center gap-2 text-[#1abc9c] text-sm font-semibold">
                   <span className="before:content-['💵']">Earned: ${freelancerDetails.earned || 0}</span>
                 </span>
+                <span className="flex items-center gap-2 text-[#1abc9c] text-sm font-semibold">
+                  <span className="before:content-['🔗']">Connects: {freelancerDetails.connects || 0}</span>
+                </span>
               </>
             ) : (
               <span className="text-[#f1c40f] text-sm italic">Loading freelancer details...</span>
             )}
-            {error && <span className="text-[#e74c3c] text-sm font-semibold">Error: {error}</span>}
           </li>
         )}
+
+        {/* User Dropdown */}
         {user ? (
           <li className="relative">
-            <button onClick={toggleDropdown} className="bg-[#1abc9c] text-black px-3.5 py-2 rounded-lg font-medium hover:bg-[#16a085] transition-colors duration-300">
-              Profile ▾
+            <button
+              onClick={toggleDropdown}
+              className="flex items-center gap-2 text-white px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium"
+            >
+              <span>{user.name}</span>
+              <span className="text-xs text-[#1abc9c]">{getUserRole()}</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
             </button>
             {isDropdownOpen && (
-              <div className="absolute top-16 right-0 bg-[#222] p-3 rounded-xl shadow-lg flex flex-col min-w-[160px]">
-                <span className="text-[#eee] text-sm mb-2">{user.name}</span>
-                <span className="text-[#eee] text-sm mb-2">{user.accType}</span>
-                <button className="px-2.5 py-1.5 bg-[#1abc9c] text-black font-semibold rounded-lg hover:bg-[#16a085] transition-colors duration-300" onClick={logout}>Logout</button>
+              <div className="absolute right-0 mt-2 w-48 bg-[#111] rounded-lg shadow-lg border border-[#1abc9c55]">
+                <Link
+                  to="/profile"
+                  className="block w-full text-left px-4 py-2 text-white hover:bg-[#1abc9c] hover:text-black transition-colors duration-300"
+                >
+                  Profile
+                </Link>
+                <Link
+                  to="/settings"
+                  className="block w-full text-left px-4 py-2 text-white hover:bg-[#1abc9c] hover:text-black transition-colors duration-300"
+                >
+                  Settings
+                </Link>
+                <button
+                  onClick={logout}
+                  className="block w-full text-left px-4 py-2 text-white hover:bg-[#1abc9c] hover:text-black transition-colors duration-300"
+                >
+                  Logout
+                </button>
               </div>
             )}
           </li>
@@ -122,10 +168,6 @@ const Navbar = () => {
           </>
         )}
       </ul>
-
-      <div onClick={toggleMenu} className="block md:hidden text-3xl text-[#1abc9c] cursor-pointer">
-        ☰
-      </div>
     </nav>
   );
 };
