@@ -91,7 +91,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <h1 className="text-4xl font-bold text-[#1abc9c]">Welcome back, {currentUser.name} 👋</h1>
-                  <h2 className="text-xl text-[#c1faff]">Here's a quick summary of your activity</h2>
+              <h2 className="text-xl text-[#c1faff]">Here's a quick summary of your activity</h2>
                 </div>
               </div>
             </section>
@@ -183,7 +183,7 @@ const Dashboard = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-[#1abc9c]">Messages</h3>
-                    <p className="text-[#c1faff]">{messagesCount} Unread</p>
+                <p className="text-[#c1faff]">{messagesCount} Unread</p>
                   </div>
                 </div>
               </div>
@@ -200,9 +200,9 @@ const Dashboard = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-[#1abc9c]">
-                      {currentUser.accType === "Client" ? "Spent" : "Earnings"}
-                    </h3>
-                    <p className="text-[#c1faff]">${earnings}</p>
+                  {currentUser.accType === "Client" ? "Spent" : "Earnings"}
+                </h3>
+                <p className="text-[#c1faff]">${earnings}</p>
                   </div>
                 </div>
               </div>
@@ -225,14 +225,14 @@ const Dashboard = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-[#1abc9c]">
-                      {currentUser.accType === "Client"
-                        ? "Active Jobs"
-                        : "Applied Proposals"}
-                    </h3>
-                    <p className="text-[#c1faff]">
-                      {jobsCount}{" "}
-                      {currentUser.accType === "Client" ? "Active" : "Applied"}
-                    </p>
+                  {currentUser.accType === "Client"
+                    ? "Active Jobs"
+                    : "Applied Proposals"}
+                </h3>
+                <p className="text-[#c1faff]">
+                  {jobsCount}{" "}
+                  {currentUser.accType === "Client" ? "Active" : "Applied"}
+                </p>
                   </div>
                 </div>
               </div>

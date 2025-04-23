@@ -1,48 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import axios from 'axios';
+import { useUser } from '../../context/UserContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const { freelancerDetails, clientDetails, error } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [clientDetails, setClientDetails] = useState(null);
-  const [freelancerDetails, setFreelancerDetails] = useState(null);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      if (user && user.accType) {
-        const accType = user.accType.toLowerCase();
-        
-        if (accType === 'client') {
-          try {
-            const response = await axios.get(`http://localhost:4000/api/v1/Client/${user.userID}`);
-            setClientDetails(response.data);
-          } catch (error) {
-            setError(error.message);
-          }
-        } else if (accType === 'freelancer') {
-          try {
-            const [freelancerResponse, connectsResponse] = await Promise.all([
-              axios.get(`http://localhost:4000/api/v1/freelancer/${user.userID}`),
-              axios.get(`http://localhost:4000/api/v1/freelancer/totalConnects/${user.userID}`)
-            ]);
-            
-            setFreelancerDetails({
-              ...freelancerResponse.data,
-              connects: connectsResponse.data.totalConnects || 0
-            });
-          } catch (error) {
-            setError(error.message);
-          }
-        }
-      }
-    };
-
-    fetchUserDetails();
-  }, [user]);
 
   const getUserRole = () => {
     if (user && user.accType) {

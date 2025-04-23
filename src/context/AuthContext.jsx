@@ -28,6 +28,11 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('skilllink-user');
+    // Clear any other user-related data
+    localStorage.removeItem('skilllink-freelancer-details');
+    localStorage.removeItem('skilllink-client-details');
+    // Force a page reload to clear all state
+    window.location.href = '/';
   };
 
   return (
