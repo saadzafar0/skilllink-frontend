@@ -32,6 +32,7 @@ const ActiveJobs = () => {
                 );
                 const data = await res.json();
                 setJobs(data || []);
+                console.log("Jobs fetched:", data);
             } catch (err) {
                 console.error("Failed to fetch active jobs:", err);
             } finally {

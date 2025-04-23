@@ -77,7 +77,7 @@ const Navbar = () => {
           <>
             <li><Link to="/dashboard" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Dashboard</Link></li>
             <li><Link to="/post-job" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Post Job</Link></li>
-            <li><Link to="/active-jobs" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Active Jobs</Link></li>
+            <li><Link to="/active-jobs" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">All Jobs</Link></li>
             <li><Link to="/ongoingJobs" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Ongoing Jobs</Link></li>
             <li><Link to="/transactions" className="text-white no-underline px-3.5 py-2 rounded-lg transition-colors duration-300 hover:bg-[#1abc9c] hover:text-black font-medium">Transactions</Link></li>
           </>
