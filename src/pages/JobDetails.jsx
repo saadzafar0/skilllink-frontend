@@ -60,11 +60,13 @@ const JobDetails = () => {
         />
         <SkillsList skills={jobDetails.targetSkills ? jobDetails.targetSkills.split(",") : []} />
         
-        <SendProposal
-          jobid={jobID}
-          freelancerID={user ? user.userID : null}
-          onSubmit={handleProposalSubmit}
-        />
+        {user && user.accType && user.accType.toLowerCase() === 'freelancer' && (
+          <SendProposal
+            jobid={jobID}
+            freelancerID={user.userID}
+            onSubmit={handleProposalSubmit}
+          />
+        )}
       </div>
     </div>
   );

@@ -167,12 +167,7 @@ const Dashboard = () => {
                             >
                               View
                             </button>
-                            <button
-                              className="px-4 py-2 bg-[#3498db] text-white rounded-lg hover:bg-[#2980b9] transition-colors duration-300"
-                              onClick={() => navigate(`/messages?receiverID=${p.clientID}`)}
-                            >
-                              Message
-                            </button>
+                            
                             <button
                               className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300"
                               onClick={async () => {
@@ -220,16 +215,11 @@ const Dashboard = () => {
                           <div className="flex gap-4">
                             <button
                               className="px-4 py-2 bg-[#1abc9c] text-white rounded-lg hover:bg-[#16a085] transition-colors duration-300"
-                              onClick={() => navigate(`/jobs/${job.jobID}`)}
+                              onClick={() => navigate(`/jobDetails/${job.jobID}`)}
                             >
                               View
                             </button>
-                            <button
-                              className="px-4 py-2 bg-[#3498db] text-white rounded-lg hover:bg-[#2980b9] transition-colors duration-300"
-                              onClick={() => navigate(`/messages?receiverID=${job.cID}`)}
-                            >
-                              Message
-                            </button>
+                            
                           </div>
                         </div>
                       ))}

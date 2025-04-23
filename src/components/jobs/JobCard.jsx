@@ -19,7 +19,7 @@ const JobCard = ({ job, showActions, onDelete, onEdit }) => {
       </p>
 
       <Link 
-        to={`/jobs/${job.jobID}`} 
+        to={`/jobDetails/${job.jobID}`} 
         className="inline-flex items-center gap-2 text-[#1abc9c] no-underline font-semibold transition-all duration-300 hover:text-white hover:gap-3 group"
       >
         View Details
