@@ -25,8 +25,15 @@ const Navbar = () => {
           }
         } else if (accType === 'freelancer') {
           try {
-            const response = await axios.get(`http://localhost:4000/api/v1/freelancer/${user.userID}`);
-            setFreelancerDetails(response.data);
+            const [freelancerResponse, connectsResponse] = await Promise.all([
+              axios.get(`http://localhost:4000/api/v1/freelancer/${user.userID}`),
+              axios.get(`http://localhost:4000/api/v1/freelancer/totalConnects/${user.userID}`)
+            ]);
+            
+            setFreelancerDetails({
+              ...freelancerResponse.data,
+              connects: connectsResponse.data.totalConnects || 0
+            });
           } catch (error) {
             setError(error.message);
           }

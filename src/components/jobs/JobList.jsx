@@ -11,7 +11,7 @@ const JobList = ({ jobs }) => {
       {jobs.map((job) => (
         <Link
           key={job.jobID}
-          to={`/jobs/${job.jobID}`}
+          to={`/jobDetails/${job.jobID}`}
           className="block bg-[#303030] rounded-lg p-6 hover:bg-[#404040] transition-colors duration-200"
         >
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

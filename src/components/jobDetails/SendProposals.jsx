@@ -76,52 +76,82 @@ const SendProposal = ({ jobid, freelancerID, onSubmit }) => {
   };
 
   return (
-    <div className="mt-5">
+    <div className="mt-8">
       {!freelancerID ? (
-        <div className="text-center p-5 border border-[#e0e0e0] rounded-lg bg-[#f9f9f9] mt-5">
-          <p className="text-[#721c24] font-medium">Please log in to submit a proposal for this job</p>
+        <div className="text-center p-6 border border-[#1abc9c55] rounded-lg bg-[#1a1a1a]">
+          <p className="text-[#1abc9c] font-medium">Please log in to submit a proposal for this job</p>
         </div>
       ) : (
-        <form className="flex flex-col gap-4 mt-5 border border-[#e0e0e0] rounded-lg p-5 bg-[#f9f9f9]" onSubmit={handleSubmit}>
-          <h3 className="mt-0 text-[#333]">Send Proposal</h3>
-          <label className="flex flex-col gap-1.5 font-medium">
-            Bid Amount ($):
-            <input
-              type="number"
-              value={bidAmount}
-              onChange={(e) => setBidAmount(e.target.value)}
-              required
-              min="1"
-              className="p-2.5 border border-[#ddd] rounded font-normal text-sm"
-            />
-          </label>
-          <label className="flex flex-col gap-1.5 font-medium">
-            Cover Letter:
-            <textarea
-              value={coverLetter}
-              onChange={(e) => setCoverLetter(e.target.value)}
-              rows="4"
-              required
-              placeholder="Introduce yourself and explain why you're a good fit for this job..."
-              className="p-2.5 border border-[#ddd] rounded font-normal text-sm min-h-[100px] resize-y"
-            />
-          </label>
+        <form 
+          onSubmit={handleSubmit}
+          className="space-y-6 border border-[#1abc9c55] rounded-lg p-8 bg-[#1a1a1a] shadow-lg"
+        >
+          <div className="space-y-1">
+            <h3 className="text-2xl font-bold text-[#1abc9c]">Send Proposal</h3>
+            <p className="text-[#c1faff] text-sm">Fill in the details below to submit your proposal</p>
+          </div>
+
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="block text-[#1abc9c] font-medium">
+                Bid Amount ($)
+              </label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c1faff]">$</span>
+                <input
+                  type="number"
+                  value={bidAmount}
+                  onChange={(e) => setBidAmount(e.target.value)}
+                  required
+                  min="1"
+                  placeholder="Enter your bid amount"
+                  className="w-full pl-8 pr-4 py-3 bg-[#2c3e50] border border-[#1abc9c55] rounded-lg text-[#c1faff] focus:outline-none focus:border-[#1abc9c] focus:ring-1 focus:ring-[#1abc9c] transition-all duration-300"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-[#1abc9c] font-medium">
+                Cover Letter
+              </label>
+              <textarea
+                value={coverLetter}
+                onChange={(e) => setCoverLetter(e.target.value)}
+                rows="6"
+                required
+                placeholder="Introduce yourself and explain why you're a good fit for this job..."
+                className="w-full px-4 py-3 bg-[#2c3e50] border border-[#1abc9c55] rounded-lg text-[#c1faff] focus:outline-none focus:border-[#1abc9c] focus:ring-1 focus:ring-[#1abc9c] transition-all duration-300 resize-y"
+              />
+            </div>
+          </div>
+
+          {message && (
+            <div className={`p-4 rounded-lg ${
+              messageType === "success" 
+                ? "bg-[#1abc9c22] text-[#1abc9c] border border-[#1abc9c55]" 
+                : "bg-[#e74c3c22] text-[#e74c3c] border border-[#e74c3c55]"
+            }`}>
+              {message}
+            </div>
+          )}
+
           <button 
             type="submit" 
             disabled={loading}
-            className="bg-[#0070f3] text-white rounded px-4 py-2.5 text-base cursor-pointer transition-colors duration-200 self-start hover:bg-[#0051a8] disabled:bg-[#a3c0e6] disabled:cursor-not-allowed"
+            className="w-full py-3 px-6 bg-[#1abc9c] text-white rounded-lg font-medium hover:bg-[#16a085] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            {loading ? "Submitting..." : "Submit Proposal"}
+            {loading ? (
+              <>
+                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Submitting...
+              </>
+            ) : (
+              "Submit Proposal"
+            )}
           </button>
-          {message && (
-            <p className={`mt-2.5 p-2.5 rounded ${
-              messageType === "success" 
-                ? "bg-[#d4edda] text-[#155724] border border-[#c3e6cb]" 
-                : "bg-[#f8d7da] text-[#721c24] border border-[#f5c6cb]"
-            }`}>
-              {message}
-            </p>
-          )}
         </form>
       )}
     </div>
