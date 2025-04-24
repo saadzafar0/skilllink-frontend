@@ -19,14 +19,17 @@ const Messages = ({ receiverId, receiverName }) => {
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (messages.length > 0) {
+      scrollToBottom();
+    }
+  }, [messages.length]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (messageInput.trim() && receiverId) {
       sendNewMessage(receiverId, messageInput.trim());
       setMessageInput('');
+      setTimeout(scrollToBottom, 100);
     }
   };
 
@@ -46,7 +49,13 @@ const Messages = ({ receiverId, receiverName }) => {
       </div>
       
       {/* Messages Container - Scrollable */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 mt-16" style={{ scrollBehavior: 'smooth' }}>
+      <div 
+        className="flex-1 overflow-y-auto p-4 space-y-4 mt-16 mb-20" 
+        style={{ 
+          scrollBehavior: 'smooth',
+          overflowAnchor: 'none' // Prevent automatic scrolling
+        }}
+      >
         {messages.length === 0 ? (
           <div className="h-full flex items-center justify-center">
             <p className="text-gray-500">No messages yet. Start the conversation!</p>
@@ -54,7 +63,7 @@ const Messages = ({ receiverId, receiverName }) => {
         ) : (
           messages.map((message, index) => (
             <div
-              key={index}
+              key={`${message.messageID || index}-${message.timestamp}`}
               className={`flex ${message.senderID === user?.userID ? 'justify-end' : 'justify-start'}`}
             >
               <div
@@ -64,7 +73,7 @@ const Messages = ({ receiverId, receiverName }) => {
                     : 'bg-white text-gray-900 rounded-bl-none shadow-sm'
                 }`}
               >
-                <p className="break-words">{message.content}</p>
+                <p className="break-words whitespace-pre-wrap">{message.content}</p>
                 <span className={`text-xs mt-1 block ${message.senderID === user?.userID ? 'text-blue-100' : 'text-gray-500'}`}>
                   {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>

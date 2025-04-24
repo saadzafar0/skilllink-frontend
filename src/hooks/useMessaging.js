@@ -23,7 +23,17 @@ export const useMessaging = (userID) => {
       // Listen for new messages
       socket.on('receive_message', (message) => {
         setNewMessage(message);
-        setMessages(prev => [...prev, message]);
+        setMessages(prev => {
+          // Check if message already exists to prevent duplicates
+          const messageExists = prev.some(m => 
+            m.messageID === message.messageID || 
+            (m.senderID === message.senderID && 
+             m.receiverID === message.receiverID && 
+             m.content === message.content && 
+             m.timestamp === message.timestamp)
+          );
+          return messageExists ? prev : [...prev, message];
+        });
       });
 
       return () => {
@@ -40,8 +50,6 @@ export const useMessaging = (userID) => {
         content
       };
       sendMessage(messageData);
-      // Fetch messages after sending to ensure we have the latest
-      fetchMessages(receiverID);
     }
   };
 
