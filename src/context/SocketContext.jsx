@@ -19,7 +19,7 @@ export const SocketProvider = ({ children }) => {
       reconnection: true,
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
-    });
+    });newSocket
 
     newSocket.on('connect', () => {
       setIsConnected(true);
